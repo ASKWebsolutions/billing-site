@@ -173,7 +173,7 @@ export default function Navbar() {
         >
         <nav className="container mx-auto grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 py-2 md:gap-4 lg:py-2.5 xl:gap-6">
           <Link to="/" className="relative z-10 shrink-0">
-            <img src="https://mbxsol.com/wp-content/uploads/2026/04/MBX-Solutions-Logo-2-e1779169428791.png" alt="MBX Solutions" className="h-8 md:h-10 lg:h-12 w-auto" />
+            <img src="/mbx-logo.png" alt="MBX Solutions" className="h-8 md:h-10 lg:h-12 w-auto" />
           </Link>
 
           <div className="hidden min-w-0 items-center justify-center xl:flex">

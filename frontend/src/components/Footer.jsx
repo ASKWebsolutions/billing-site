@@ -93,7 +93,7 @@ export default function Footer() {
             <button onClick={() => setShowReview(true)} className="inline-flex items-center gap-1.5 transition-colors hover:text-white">
               <Star size={12} /> Write a Review
             </button>
-            <a href="#" className="transition-colors hover:text-white">Privacy Policy</a>
+            <Link to="/privacy-policy" className="transition-colors hover:text-white">Privacy Policy</Link>
             <a href="#" className="transition-colors hover:text-white">Terms of Service</a>
           </div>
         </div>

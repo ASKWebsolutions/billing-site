@@ -31,6 +31,7 @@ import Locations from './pages/Locations'
 import Location from './pages/Location'
 import FAQs from './pages/FAQs'
 import FreeBillingAudit from './pages/FreeBillingAudit'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 function AppContent() {
   const { pathname } = useLocation()
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="/team" element={<Team />} />
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/free-billing-audit" element={<FreeBillingAudit />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/admin/*" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
