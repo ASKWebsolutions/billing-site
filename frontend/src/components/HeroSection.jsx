@@ -30,9 +30,9 @@ const slides = [
   {
     id: 'billing',
     bg: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&auto=format&fit=crop&q=80',
-    giant: '30%',
+    giant: '20%',
     eyebrow: 'Services',
-    lines: ['Boost Collections &', 'Grow Your Practice', 'by 30%'],
+    lines: ['Boost Collections &', 'Grow Your Practice', 'by 20%'],
     highlightIndex: 2,
     para: null,
     card: {
