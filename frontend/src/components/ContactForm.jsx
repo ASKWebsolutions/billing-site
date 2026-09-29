@@ -234,10 +234,10 @@ export default function ContactForm({ compact, className }) {
                 onChange={(v) => setForm((f) => ({ ...f, specialty: v }))}
                 other={form.specialtyOther}
                 onOtherChange={(v) => setForm((f) => ({ ...f, specialtyOther: v }))}
-                otherPlaceholder="Enter specialty"
+                otherPlaceholder="Enter speciality"
                 compact={compact}
                 inputName="specialty"
-                placeholder="Select specialty"
+                placeholder="Select speciality"
               />
             </div>
             <div className={compact ? 'mt-3' : 'mt-4'}>

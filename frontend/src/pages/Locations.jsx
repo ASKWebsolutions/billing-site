@@ -119,7 +119,7 @@ function ConsultationForm() {
             onChange={handleChange}
             className={`${inputClass} appearance-none`}
           >
-            <option value="" disabled>Select specialty</option>
+            <option value="" disabled>Select Speciality</option>
             {SPECIALTY_OPTIONS.map((o) => (
               <option key={o} value={o}>{o}</option>
             ))}
@@ -130,7 +130,7 @@ function ConsultationForm() {
               name="specialtyOther"
               value={form.specialtyOther}
               onChange={handleChange}
-              placeholder="Enter specialty"
+              placeholder="Enter Speciality"
               className={`${inputClass} mt-2`}
             />
           )}

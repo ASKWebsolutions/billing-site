@@ -71,7 +71,7 @@ export default function MedicalAssistant() {
       </section>
 
       {/* Speciality */}
-      <section id="speciality" className="py-16 lg:py-20 bg-mbx-white">
+      <section id="specialty" className="py-16 lg:py-20 bg-mbx-white">
         <div className="container mx-auto">
           <AnimatedSection>
             <SectionHeading

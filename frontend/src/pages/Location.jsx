@@ -20,7 +20,7 @@ const benefits = [
   { icon: BadgeCheck, label: 'Free Trial 3 Months', desc: 'Experience our services completely risk-free.' },
   { icon: FileCheck2, label: 'Free Back Date Audit', desc: 'Uncover revenue your practice is currently missing.' },
   { icon: TrendingUp, label: 'Weekly Reporting', desc: 'Full transparency with reports, every single week.' },
-  { icon: Users, label: 'Tailored Services', desc: 'Solutions built around your specialty and workflow.' },
+  { icon: Users, label: 'Tailored Services', desc: 'Solutions built around your speciality and workflow.' },
 ]
 
 const partnerSoftwares = [
@@ -95,7 +95,7 @@ const industries = [
 const faqs = [
   { q: 'What is medical billing?', a: 'Medical billing is the process of submitting and following up on claims with health insurance companies to ensure healthcare providers are reimbursed for their services. It involves coding services and diagnoses accurately, submitting claims, and managing payments and denials.' },
   { q: 'Why should I outsource my medical billing?', a: 'Outsourcing medical billing allows you to focus on patient care rather than administrative tasks. With experienced professionals managing your billing, you reduce errors, improve cash flow, and increase efficiency, all while ensuring compliance with regulations.' },
-  { q: 'What types of practices do you work with?', a: 'We serve a wide variety of healthcare providers including physicians, dentists, chiropractors, specialists, urgent care centers, outpatient facilities, and more. No matter your medical specialty, we can tailor a solution to meet your needs.' },
+  { q: 'What types of practices do you work with?', a: 'We serve a wide variety of healthcare providers including physicians, dentists, chiropractors, specialists, urgent care centers, outpatient facilities, and more. No matter your medical speciality, we can tailor a solution to meet your needs.' },
   { q: 'How does your billing process work?', a: 'Our billing process begins with data collection and verification, followed by accurate medical coding, submission of claims, payment posting, and reconciliation. We also handle denial management and follow-up procedures to ensure timely payments.' },
   { q: 'Are your services HIPAA-compliant?', a: 'Yes, MBX Solutions is fully committed to maintaining HIPAA compliance and ensuring the security and privacy of your patient data. We follow industry best practices and utilize secure systems to protect sensitive information.' },
   { q: 'How much do your medical billing services cost?', a: 'Our pricing is customized based on the size of your practice and the services you require. We offer competitive pricing designed to be cost-effective while delivering high-quality billing solutions. Contact us for a quote.' },
@@ -534,7 +534,7 @@ export default function Location() {
                 ))}
               </div>
               <p className="mt-8 max-w-lg text-sm leading-relaxed text-mbx-text-muted">
-                No matter your specialty, we can tailor a solution that helps you manage your medical billing efficiently
+                No matter your speciality, we can tailor a solution that helps you manage your medical billing efficiently
                 and accurately.
               </p>
             </AnimatedSection>

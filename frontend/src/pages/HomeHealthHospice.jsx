@@ -1073,10 +1073,10 @@ export function Specialties() {
           icon={Stethoscope}
           title={
             <>
-              Every Medical Specialty Covered <span className="text-[#0E9B8F]">With Precision</span>
+              Every Medical Speciality Covered <span className="text-[#0E9B8F]">With Precision</span>
             </>
           }
-          subtitle="Certified AAPC / AHIMA coders and Part B specialists who know the CPT, ICD-10, HCPCS, modifiers and the regional Medicare LCDs that govern each specialty — so clean claims are the default, not the exception."
+          subtitle="Certified AAPC / AHIMA coders and Part B specialists who know the CPT, ICD-10, HCPCS, modifiers and the regional Medicare LCDs that govern each speciality — so clean claims are the default, not the exception."
         />
 
         <StaggerChildren className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" stagger={0.05}>
@@ -1200,7 +1200,7 @@ const SERVICES = [
   { num: '02', title: 'Real-Time Eligibility & Benefits Verification', sla: 'Same-Day SLA', impact: 'No surprise write-offs', desc: 'Live coverage, deductible, and benefit checks before the service is ever delivered.' },
   { num: '03', title: 'Prior & Retro Authorization Protocol', sla: '48h SLA', impact: 'Kills CO-197 denials', desc: 'Structured auth capture so elective and emergency services never file without the right approvals.' },
   { num: '04', title: '24-Hour Charge Entry & Double Quality Control', sla: '24h SLA', impact: 'Clean claim fuel', desc: 'Encounters posted same-day and dual-reviewed before they ever reach the clearinghouse.' },
-  { num: '05', title: 'Certified Medical Coding (CPT / ICD-10 / HCPCS)', sla: '48h SLA', impact: 'AAPC/AHIMA certified', desc: 'Specialty-specific coders who assign the exact codes and modifiers that pay.' },
+  { num: '05', title: 'Certified Medical Coding (CPT / ICD-10 / HCPCS)', sla: '48h SLA', impact: 'AAPC/AHIMA certified', desc: 'Speciality-specific coders who assign the exact codes and modifiers that pay.' },
   { num: '06', title: 'Clean Claim Submission & Scrubbing', sla: 'Same-Day SLA', impact: '98%+ first-pass', desc: 'Claim-scrubbed against payer edits and submitted immediately — never batched for days.' },
   { num: '07', title: 'Payment Posting: ERA & EOB Line Reconciliation', sla: '24h SLA', impact: 'Exact bank-match', desc: 'Every payment reconciled to the dollar against the deposit in your bank account.' },
   { num: '08', title: 'Root-Cause Denial Management & Appeals', sla: '7–14 Day SLA', impact: 'Recover + prevent', desc: 'Denials dissected by root cause, appealed with evidence, and engineered out of workflows.' },
@@ -1451,7 +1451,7 @@ const DENIALS = [
     code: 'PR-204',
     icon: ShieldAlert,
     name: 'Service Not Covered / Benefit Limit Exhausted',
-    mistake: 'Therapy visits or specialty services billed past the payer benefit cap as though coverage was unlimited.',
+    mistake: 'Therapy visits or speciality services billed past the payer benefit cap as though coverage was unlimited.',
     protocol: [
       'Benefit-exhaust tracking loaded before scheduling',
       'Patient financial responsibility captured in advance',

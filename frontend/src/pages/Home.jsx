@@ -518,7 +518,7 @@ function SpecialtiesSection() {
           </p>
         </div>
 
-        {/* Specialty Cards */}
+        {/* Speciality Cards */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5 max-w-7xl mx-auto">
           {specialties.map((s, i) => (
             <AnimatedSection key={s.title} delay={i * 0.08}>

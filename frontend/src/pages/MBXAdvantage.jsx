@@ -40,7 +40,7 @@ const advantages = [
     title: 'What They Say About Us',
     icon: Quote,
     tone: 'quote',
-    description: 'Watch and read firsthand how home health, hospice, and medical specialty leaders trust MBX Solutions to resolve stuck aging receivables and transform their daily billing operations.',
+    description: 'Watch and read firsthand how home health, hospice, and medical speciality leaders trust MBX Solutions to resolve stuck aging receivables and transform their daily billing operations.',
     link: '/testimonials',
     linkLabel: 'Explore Testimonials',
   },

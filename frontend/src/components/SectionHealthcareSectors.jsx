@@ -18,7 +18,7 @@ const sectors = [
   {
     icon: HeartPulse,
     label: 'Healthcare Centers',
-    desc: 'MBX Solutions delivers comprehensive revenue cycle management for community and specialty centers.',
+    desc: 'MBX Solutions delivers comprehensive revenue cycle management for community and speciality centers.',
     image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80',
   },
 ]

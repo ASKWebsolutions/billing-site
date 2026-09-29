@@ -74,7 +74,7 @@ const CATEGORIES = [
       },
       {
         q: 'Who handles the medical coding? Are they certified?',
-        a: 'Every coder in our team is AAPC / AHIMA certified. Coding is specialty-specific — meaning the cardiology coders know echo and cath lab rules, the PDGM team knows OASIS-E and HIPPS, and everyone stays current on regional Medicare LCDs and modifier rules.',
+        a: 'Every coder in our team is AAPC / AHIMA certified. Coding is speciality-specific — meaning the cardiology coders know echo and cath lab rules, the PDGM team knows OASIS-E and HIPPS, and everyone stays current on regional Medicare LCDs and modifier rules.',
       },
       {
         q: 'How is my financial and patient data protected?',
