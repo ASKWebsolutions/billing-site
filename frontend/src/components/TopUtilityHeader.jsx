@@ -8,25 +8,33 @@ export function TopAnnouncementBar() {
   return (
       <div className="border-b border-white/10 bg-[#4486BF] text-white">
       <div
-        className={`${announceContainer} flex-col items-center justify-center gap-1.5 py-0.5 text-center lg:h-[42px] lg:flex-row lg:justify-start lg:gap-4 lg:py-0.5 lg:text-left`}
+        className={`${announceContainer} flex-col items-center justify-center gap-1.5 py-0.5 text-center lg:h-[42px] lg:flex-row lg:flex-nowrap lg:justify-between lg:gap-2 lg:overflow-hidden lg:py-0.5 lg:text-left`}
       >
-        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:gap-3">
-          <span className="whitespace-nowrap rounded-[6px] border border-white/30 bg-white/15 px-2.5 py-1 text-[12px] font-semibold leading-none tracking-wide text-white">
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:gap-x-2.5 lg:flex-nowrap lg:justify-start lg:gap-x-1.5 xl:gap-x-2.5">
+          <span className="whitespace-nowrap rounded-[6px] border border-white/30 bg-white/15 px-2 py-1 text-[11px] font-semibold leading-none tracking-wide text-white">
             Limited Availability
           </span>
-          <p className="text-[13px] font-medium leading-snug text-white/85 md:text-[13.5px]">
-            Stop Losing Revenue! <span className="font-bold text-white">Get a FREE Billing Audit</span> for Your Home
+          <p className="whitespace-nowrap text-[12px] font-medium leading-snug text-white/85 xl:text-[12.5px]">
+            <span className="hidden xl:inline">Stop Losing Revenue! </span>
+            <span className="font-bold text-white">Get a FREE Billing Audit</span> for Your Home
             Health, Home Care &amp; Hospice Agency with MBX Solutions.
           </p>
+          <Link
+            to="/services#free-audit"
+            className="group inline-flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-[6px] border border-white/30 bg-white/15 px-2 py-1 text-[12px] font-bold text-white transition-all hover:bg-white hover:text-[#0B2348] active:scale-95 xl:text-[12.5px]"
+          >
+            Claim Free Audit
+            <ArrowRight size={13} strokeWidth={2.5} className="hidden transition-transform group-hover:translate-x-0.5 xl:inline" />
+          </Link>
         </div>
 
-         <Link
-           to="/services#free-audit"
-           className="group inline-flex cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-[6px] border border-white/30 bg-white/15 px-3 py-1.5 text-[12.5px] font-bold text-white transition-all hover:bg-white hover:text-[#0B2348] active:scale-95 md:text-[13px]"
-         >
-           Claim Free Audit
-           <ArrowRight size={14} strokeWidth={2.5} className="transition-transform group-hover:translate-x-0.5" />
-         </Link>
+        <Link
+          to="/home-health-hospice"
+          className="group hidden cursor-pointer items-center gap-1 whitespace-nowrap rounded-full border border-[#18D6C0]/50 bg-white/10 px-2.5 py-1 text-[12px] font-bold text-[#18D6C0] transition-all hover:bg-[#18D6C0] hover:text-white active:scale-95 xl:text-[12.5px] lg:inline-flex"
+        >
+          Home Health & Hospice
+          <ArrowRight size={13} strokeWidth={2.5} className="hidden transition-transform group-hover:translate-x-0.5 xl:inline" />
+        </Link>
       </div>
     </div>
   )

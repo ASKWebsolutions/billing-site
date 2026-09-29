@@ -25,9 +25,12 @@ import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
 import SmallProject from './pages/SmallProject'
 import LargeProject from './pages/LargeProject'
+import HomeHealthHospice from './pages/HomeHealthHospice'
 import Team from './pages/Team'
 import Locations from './pages/Locations'
 import Location from './pages/Location'
+import FAQs from './pages/FAQs'
+import FreeBillingAudit from './pages/FreeBillingAudit'
 
 function AppContent() {
   const { pathname } = useLocation()
@@ -58,9 +61,12 @@ function AppContent() {
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/projects/small" element={<SmallProject />} />
           <Route path="/projects/large" element={<LargeProject />} />
+          <Route path="/home-health-hospice" element={<HomeHealthHospice />} />
           <Route path="/locations" element={<Locations />} />
           <Route path="/locations/:slug" element={<Location />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/free-billing-audit" element={<FreeBillingAudit />} />
           <Route path="/admin/*" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

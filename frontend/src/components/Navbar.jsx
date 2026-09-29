@@ -8,6 +8,7 @@ import { FEATURED_LOCATIONS } from '../data/locations'
 
 const navItems = [
   { label: 'Home', path: '/' },
+  { label: 'Home Health & Hospice', path: '/home-health-hospice', placeRight: true },
   {
     label: 'Company',
     path: '/company',
@@ -18,6 +19,7 @@ const navItems = [
         { label: 'Gallery', path: '/gallery' },
         { label: 'Testimonials', path: '/testimonials' },
         { label: 'HIPAA Compliance', path: '/hipaa' },
+        { label: 'FAQs', path: '/faqs' },
         { label: 'Contact Us', path: '/connect-us' },
         { label: 'Blog', path: '/blog' },
       ]},
@@ -91,16 +93,6 @@ const navItems = [
     ],
   },
   {
-    label: 'Medical Assistant',
-    path: '/medical-assistant',
-    children: [
-      { heading: 'Medical Assistant', items: [
-        { label: 'Virtual Assistant', path: '/medical-assistant' },
-        { label: 'Speciality', path: '/medical-assistant#speciality' },
-      ]},
-    ],
-  },
-  {
     label: 'RCM Services',
     path: '/rcm-services',
     children: [
@@ -124,6 +116,7 @@ const navItems = [
       ]},
     ],
   },
+  { label: 'Free Billing Audit', path: '/free-billing-audit' },
 ]
 
 export default function Navbar() {
@@ -184,7 +177,7 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden min-w-0 items-center justify-center xl:flex">
-            {navItems.map((item, idx) => (
+            {navItems.filter((item) => !item.placeRight).map((item, idx) => (
               <div key={item.label} className="group relative">
                 <div className="flex items-center">
                   <Link
