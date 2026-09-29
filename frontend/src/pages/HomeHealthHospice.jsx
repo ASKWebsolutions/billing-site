@@ -55,6 +55,12 @@ const scrollToId = (id) => {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
+const goToAudit = () => {
+  const el = document.getElementById('free-audit')
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  else window.location.href = '/free-billing-audit#free-audit'
+}
+
 function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0, duration = 2000, className = '' }) {
   const [display, setDisplay] = useState(0)
   const ref = useRef(null)
@@ -175,7 +181,7 @@ function OutlineButton({ children, onClick, className = '' }) {
     <button
       type="button"
       onClick={onClick}
-      className={`group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#00D9C7]/40 px-7 py-3.5 text-sm font-bold text-[#F7F8FA] transition-all duration-300 hover:border-[#00D9C7] hover:bg-[#00D9C7]/10 md:px-8 md:text-[15px] ${className}`}
+      className={`group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#00D9C7]/40 px-7 py-3.5 text-sm font-bold text-[#F7F8FA] transition-all duration-300 hover:border-[#00D9C7] hover:text-[#0B1428] md:px-8 md:text-[15px] ${className}`}
     >
       {children}
       <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -251,14 +257,14 @@ function Ledger() {
 
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-[#00D9C7]/10 blur-3xl" aria-hidden="true" />
-      <div className="relative rounded-3xl border border-[#E8E4DA] bg-[#FBF9F3] p-6 shadow-2xl shadow-black/40 md:p-7">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-[#00D9C7]/10 blur-3xl" aria-hidden="true" />
+      <div className="relative rounded-3xl border border-[#E8E4DA] bg-[#FBF9F3] p-4 shadow-2xl shadow-black/40 md:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2.5">
           <div>
-            <h3 className="text-[15px] font-extrabold text-[#0B1428]">Live Collections Ledger</h3>
-            <p className="text-[11px] font-semibold text-[#0B1428]/50">Billing One Iota · Real-time</p>
+            <h3 className="text-[14px] font-extrabold text-[#0B1428]">Live Collections Ledger</h3>
+            <p className="text-[10px] font-semibold text-[#0B1428]/50">Billing One Iota · Real-time</p>
           </div>
-          <div className="flex items-center gap-1 rounded-xl bg-[#ECEDEF] p-1">
+          <div className="flex items-center gap-0.5 rounded-lg bg-[#ECEDEF] p-0.5">
             {[
               { k: '30d', label: '30 Days' },
               { k: 'annual', label: 'Annualized' },
@@ -268,9 +274,9 @@ function Ledger() {
                 type="button"
                 onClick={() => setRange(t.k)}
                 aria-pressed={range === t.k}
-                className={`rounded-lg px-4 py-2 text-[11px] font-bold transition-all duration-200 ${
+                className={`rounded-md px-3 py-1.5 text-[10px] font-bold transition-all duration-200 ${
                   range === t.k
-                    ? 'bg-white text-[#0B1428] shadow-lg shadow-black/10'
+                    ? 'bg-white text-[#0B1428] shadow-md shadow-black/10'
                     : 'bg-transparent text-[#0B1428]/55 hover:bg-white/60 hover:text-[#0B1428]'
                 }`}
               >
@@ -280,16 +286,16 @@ function Ledger() {
           </div>
         </div>
 
-        <div className="mt-6 space-y-3">
+        <div className="mt-4 space-y-2">
           {rows.map((r, i) => {
             const s = LEDGER_STYLES[i]
             return (
-              <div key={r.label} className={`flex items-center gap-4 rounded-2xl border p-4 ${s.barBorder} ${s.barBg}`}>
-                <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${s.iconWrap}`}>
-                  <s.icon size={20} />
+              <div key={r.label} className={`flex items-center gap-3 rounded-xl border p-3 ${s.barBorder} ${s.barBg}`}>
+                <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${s.iconWrap}`}>
+                  <s.icon size={16} />
                 </span>
-                <p className="min-w-0 flex-1 truncate text-[11px] font-semibold text-[#0B1428]/55">{r.label}</p>
-                <p className={`shrink-0 text-lg font-extrabold tracking-tight md:text-[21px] ${s.valueClass}`}>
+                <p className="min-w-0 flex-1 truncate text-[10px] font-semibold text-[#0B1428]/55">{r.label}</p>
+                <p className={`shrink-0 text-base font-extrabold tracking-tight md:text-lg ${s.valueClass}`}>
                   {r.prefix ? (
                     <AnimatedNumber value={r.number} prefix={r.prefix} duration={1800} />
                   ) : (
@@ -301,7 +307,7 @@ function Ledger() {
           })}
         </div>
 
-        <div className="relative mt-6 overflow-hidden rounded-2xl border border-[#0B1428]/[0.06]">
+        <div className="relative mt-4 overflow-hidden rounded-2xl border border-[#0B1428]/[0.06]">
           <div className="relative aspect-[16/9] bg-[#ECEDEF]">
             <AnimatePresence mode="wait">
               <motion.img
@@ -359,7 +365,7 @@ function Hero() {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-[#0B1428] pb-20 lg:pb-24">
+    <section className="relative overflow-hidden bg-[#0B1428] pb-16 lg:pb-20">
       <div
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
@@ -374,32 +380,32 @@ function Hero() {
       <div className="pointer-events-none absolute -top-32 right-[-10%] size-[540px] rounded-full bg-[#00D9C7]/10 blur-[150px]" aria-hidden="true" />
       <div className="pointer-events-none absolute bottom-0 left-[-8%] size-[480px] rounded-full bg-[#1E5BFF]/10 blur-[140px]" aria-hidden="true" />
 
-      <div className="relative container mx-auto grid items-center gap-14 px-5 pt-14 md:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pt-20 xl:px-8">
-        <div>
+      <div className="relative container mx-auto grid items-center gap-10 px-5 pt-24 md:px-6 md:pt-28 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:pt-44 xl:px-8">
+        <div className="min-w-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="mb-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-[#00D9C7]/30 bg-[#00D9C7]/5 px-4 py-2 text-[11px] font-bold tracking-wide text-[#00D9C7] md:text-xs"
+            className="mb-5 inline-flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1.5 rounded-full border border-[#00D9C7]/30 bg-[#00D9C7]/5 px-4 py-2 text-center text-[10px] font-bold tracking-wide text-[#00D9C7] sm:w-auto sm:rounded-full sm:px-3.5 sm:py-1.5 md:text-[11px]"
           >
-            <span className="flex size-6 items-center justify-center rounded-full bg-[#00D9C7] text-[#0B1428]">
-              <HeartPulse size={13} strokeWidth={3} />
+            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#00D9C7] text-[#0B1428]">
+              <HeartPulse size={11} strokeWidth={3} />
             </span>
             <span className="whitespace-nowrap">Physician Part B Specialists</span>
-            <span className="text-white/30">·</span>
+            <span className="hidden text-white/30 sm:inline">·</span>
             <span className="whitespace-nowrap">Home Health &amp; Hospice Division</span>
-            <span className="text-white/30">·</span>
+            <span className="hidden text-white/30 sm:inline">·</span>
             <span className="whitespace-nowrap">Zero Software Switching</span>
           </motion.div>
 
-          <h1 className="text-[36px] font-extrabold leading-[1.05] tracking-[-0.03em] text-[#F7F8FA] sm:text-[44px] lg:text-[54px] xl:text-[64px]">
+          <h1 className="text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#F7F8FA] sm:text-[32px] lg:text-[38px] xl:text-[44px]">
             Physician{' '}
             <span className="text-[#00D9C7]">Part B</span> &amp; Specialized{' '}
             <span className="text-[#00D9C7]">Home Health</span> &amp;{' '}
             <span className="text-[#00D9C7]">Hospice</span> Billing That <span className="text-[#00D9C7]">Actually Pays.</span>
           </h1>
 
-          <p className="mt-6 max-w-[660px] text-[15px] leading-relaxed text-[#B8C5D8] md:text-lg">
+          <p className="mt-4 max-w-[620px] text-sm leading-relaxed text-[#B8C5D8] md:text-[15px]">
             From front-desk patient intake to{' '}
             <span className="font-bold text-[#00D9C7]">120+ day OLD AR</span> recovery. We eliminate front-end rejections,
             submit <span className="font-bold text-[#00D9C7]">98%+</span> clean claims, overturn chronic payer denials, and
@@ -407,46 +413,46 @@ function Hero() {
             institutional division for <span className="font-bold text-[#00D9C7]">Home Health &amp; Hospice</span> Care.
           </p>
 
-          <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <TealButton onClick={() => scrollToId('free-audit')}>Get Free 90-Day Revenue Audit</TealButton>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <TealButton onClick={goToAudit}>Get Free Billing Audit</TealButton>
             <OutlineButton onClick={() => scrollToId('home-health-division')}>
               Explore Home Health &amp; Hospice Division
             </OutlineButton>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-7 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {trust.map((t) => (
-              <div key={t.title} className="flex items-start gap-3">
-                <CheckCircle2 size={19} className="mt-0.5 shrink-0 text-[#00D9C7]" strokeWidth={2.2} />
+              <div key={t.title} className="flex items-start gap-2.5">
+                <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-[#00D9C7]" strokeWidth={2.2} />
                 <div>
-                  <p className="text-[13px] font-bold text-[#F7F8FA]">{t.title}</p>
-                  <p className="text-xs leading-relaxed text-[#B8C5D8]/80">{t.sub}</p>
+                  <p className="text-xs font-bold text-[#F7F8FA]">{t.title}</p>
+                  <p className="text-[11px] leading-relaxed text-[#B8C5D8]/80">{t.sub}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="lg:pl-2">
+        <div className="min-w-0 lg:pl-2">
           <Ledger />
         </div>
       </div>
 
       {/* Proof strip */}
       <div className="relative container mx-auto px-5 md:px-6 xl:px-8">
-        <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4">
           {[
             { number: 98.8, suffix: '%', decimals: 1, label: 'First-Pass Clean Claim Acceptance Rate' },
             { number: 0, suffix: '', decimals: 0, label: 'Penalty Days', sub: 'Mandatory 5-Day NOA / NOE Submissions Guaranteed' },
             { number: 32, prefix: '+', suffix: '%', decimals: 0, label: 'Average Net Collection Uplift' },
             { number: 24, suffix: ' Hrs', decimals: 0, label: 'Encounter &amp; Charge Entry Turnaround', sub: 'Double-QC on every batch' },
           ].map((s, i) => (
-            <div key={i} className="bg-[#0D1629] p-6 text-center md:p-7">
-              <p className="text-2xl font-extrabold tracking-tight text-[#00D9C7] md:text-[32px]">
+            <div key={i} className="bg-[#0D1629] p-5 text-center md:p-6">
+              <p className="text-xl font-extrabold tracking-tight text-[#00D9C7] md:text-[26px]">
                 <AnimatedNumber value={s.number} prefix={s.prefix || ''} suffix={s.suffix} decimals={s.decimals || 0} />
               </p>
-              <p className="mt-2 text-[12px] font-semibold leading-snug text-[#F7F8FA]">{s.label}</p>
-              {s.sub && <p className="mt-1 text-[11px] leading-snug text-[#B8C5D8]/70">{s.sub}</p>}
+              <p className="mt-2 text-[11px] font-semibold leading-snug text-[#F7F8FA]">{s.label}</p>
+              {s.sub && <p className="mt-1 text-[10px] leading-snug text-[#B8C5D8]/70">{s.sub}</p>}
             </div>
           ))}
         </div>
@@ -2018,14 +2024,6 @@ export default function HomeHealthHospice() {
       <Specialization />
       <CapabilityExplorer />
       <WhyInHouse />
-      <Specialties />
-      <SizingCompare />
-      <ServicesGrid />
-      <Calculator />
-      <DenialLab />
-      <EhrCompats />
-      <CaseStudies />
-      <FinalCta />
     </main>
   )
 }

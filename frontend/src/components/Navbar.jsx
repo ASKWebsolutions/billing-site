@@ -310,7 +310,7 @@ export default function Navbar() {
           >
             <div className="flex h-full flex-col overflow-y-auto pt-24 pb-10 px-8 md:pt-32 lg:pt-40">
               <ul className="space-y-0">
-                {navItems.map((item, idx) => (
+                {navItems.filter((item) => !item.placeRight).map((item, idx) => (
                   <motion.li
                     key={item.label}
                     initial={{ opacity: 0, x: -20 }}
@@ -371,6 +371,12 @@ export default function Navbar() {
                   </motion.li>
                 ))}
               </ul>
+              <Link
+                to="/home-health-hospice"
+                className="mt-8 flex items-center justify-center gap-2 rounded-[6px] bg-[#00B8A9] px-8 py-4 text-lg font-bold text-white"
+              >
+                Home Health & Hospice <ArrowRight size={18} />
+              </Link>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

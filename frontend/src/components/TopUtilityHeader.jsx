@@ -30,9 +30,9 @@ export function TopAnnouncementBar() {
 
         <Link
           to="/home-health-hospice"
-          className="group hidden cursor-pointer items-center gap-1 whitespace-nowrap rounded-full border border-[#18D6C0]/50 bg-white/10 px-2.5 py-1 text-[12px] font-bold text-[#18D6C0] transition-all hover:bg-[#18D6C0] hover:text-white active:scale-95 xl:text-[12.5px] lg:inline-flex"
+          className="group hidden cursor-pointer items-center gap-1 whitespace-nowrap rounded-[6px] border border-[#00B8A9]/50 bg-[#00B8A9] px-2.5 py-1 text-[12px] font-bold text-white transition-all hover:text-[#0B2348] active:scale-95 xl:text-[12.5px] lg:inline-flex"
         >
-          Home Health & Hospice
+          Home Health &amp; Hospice
           <ArrowRight size={13} strokeWidth={2.5} className="hidden transition-transform group-hover:translate-x-0.5 xl:inline" />
         </Link>
       </div>
