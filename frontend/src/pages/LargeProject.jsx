@@ -33,7 +33,7 @@ export default function LargeProject() {
           <div className="absolute bottom-1/4 -left-32 h-[400px] w-[400px] rounded-full bg-[#C7E7F8]/65 blur-[130px]" />
           <div className="absolute top-10 left-1/4 h-[320px] w-[320px] rounded-full bg-[#DDF1FC]/80 blur-[120px]" />
           <div className="absolute top-1/3 left-1/4 select-none pointer-events-none">
-            <span className="text-[14vw] font-extrabold text-mbx-teal/[0.04] tracking-tighter">LARGE PROJECT</span>
+            <span className="text-[14vw] font-extrabold text-mbx-teal/[0.04] tracking-tighter">LARGE PRACTICE</span>
           </div>
         </div>
         <div className="container mx-auto relative z-10 pt-44 md:pt-48 lg:pt-44 pb-16 lg:pb-24">
@@ -44,7 +44,7 @@ export default function LargeProject() {
               transition={{ duration: 0.6 }}
               className="mb-5 inline-flex items-center gap-2 rounded-full border border-mbx-teal/30 bg-white/70 px-4 py-1.5 text-[11px] font-bold tracking-[0.15em] uppercase text-mbx-teal"
             >
-              <Building2 size={13} /> Large Project
+              <Building2 size={13} /> Large Practice
             </motion.span>
             <h1 className="mt-4 max-w-4xl text-4xl font-extrabold tracking-tight text-mbx-navy md:text-5xl lg:text-6xl leading-[1.1]">
               Enterprise-Grade Revenue Cycle for <span className="text-mbx-teal">Growing Agencies</span>
@@ -82,7 +82,7 @@ export default function LargeProject() {
         <div className="container mx-auto">
           <AnimatedSection>
             <SectionHeading
-              eyebrow="Large Project Scope"
+              eyebrow="Large Practice Scope"
               title="Built to Handle Serious Volume"
               subtitle="The larger the operation, the more a disconnected billing stack costs you. MBX Solutions replaces it with one accountable engine."
             />
@@ -109,12 +109,12 @@ export default function LargeProject() {
           <div className="flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-16">
             <div className="flex-1">
               <AnimatedSection>
-                <span className="mb-5 inline-block text-xs font-bold tracking-[0.2em] uppercase text-mbx-teal">The Large Project Promise</span>
+                <span className="mb-5 inline-block text-xs font-bold tracking-[0.2em] uppercase text-mbx-teal">The Large Practice Promise</span>
                 <h2 className="mb-4 text-3xl md:text-4xl font-extrabold tracking-tight text-mbx-navy leading-[1.1]">
                   Accountability at Every Scale
                 </h2>
                 <p className="text-lg leading-relaxed text-mbx-text-muted max-w-xl">
-                  From onboarding to daily claims flow, every MBX Solutions large project gets clear SLAs, named
+                  From onboarding to daily claims flow, every MBX Solutions large practice gets clear SLAs, named
                   points of contact and reporting leadership can actually act on.
                 </p>
               </AnimatedSection>
@@ -143,7 +143,7 @@ export default function LargeProject() {
         <div className="container mx-auto text-center relative z-10">
           <AnimatedSection>
             <h2 className="mb-6 text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-mbx-navy">
-              Let's Discuss Your Large Project
+              Let's Discuss Your Large Practice
             </h2>
             <p className="mx-auto mb-10 max-w-2xl text-lg text-mbx-text-muted">
               Get a free RCM analysis from MBX Solutions for your agency and see what a dedicated billing operation can recover for you.

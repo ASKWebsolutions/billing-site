@@ -25,7 +25,7 @@ export default function SmallProject() {
           <div className="absolute bottom-1/4 -left-32 h-[400px] w-[400px] rounded-full bg-[#C7E7F8]/65 blur-[130px]" />
           <div className="absolute top-10 left-1/4 h-[320px] w-[320px] rounded-full bg-[#DDF1FC]/80 blur-[120px]" />
           <div className="absolute top-1/3 left-1/4 select-none pointer-events-none">
-            <span className="text-[14vw] font-extrabold text-mbx-teal/[0.04] tracking-tighter">SMALL PROJECT</span>
+            <span className="text-[14vw] font-extrabold text-mbx-teal/[0.04] tracking-tighter">SMALL PRACTICE</span>
           </div>
         </div>
         <div className="container mx-auto relative z-10 pt-44 md:pt-48 lg:pt-44 pb-16 lg:pb-24">
@@ -36,7 +36,7 @@ export default function SmallProject() {
               transition={{ duration: 0.6 }}
               className="mb-5 inline-flex items-center gap-2 rounded-full border border-mbx-teal/30 bg-white/70 px-4 py-1.5 text-[11px] font-bold tracking-[0.15em] uppercase text-mbx-teal"
             >
-              <Wallet size={13} /> Small Project
+              <Wallet size={13} /> Small Practice
             </motion.span>
             <h1 className="mt-4 max-w-4xl text-4xl font-extrabold tracking-tight text-mbx-navy md:text-5xl lg:text-6xl leading-[1.1]">
               Billing Support Built for <span className="text-mbx-teal">Small Practices</span>
@@ -46,7 +46,7 @@ export default function SmallProject() {
               service designed for small clinics, solo providers and home care startups.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <PrimaryButton to="/connect-us" size="lg">Start a Small Project</PrimaryButton>
+              <PrimaryButton to="/connect-us" size="lg">Start a Small Practice</PrimaryButton>
               <Link to="/services" className="inline-flex items-center gap-2 rounded-xl border-2 border-mbx-teal/30 px-6 py-3.5 text-sm font-bold text-mbx-navy transition-all hover:border-mbx-teal hover:bg-mbx-teal/5">
                 Explore Services <ArrowRight size={16} />
               </Link>
@@ -93,7 +93,7 @@ export default function SmallProject() {
                   Small Practices, Big Expectations
                 </h2>
                 <p className="text-lg leading-relaxed text-white/60 max-w-xl">
-                  MBX Solutions' small project package is built to fit modest volumes and tight budgets — without
+                  MBX Solutions' small practice package is built to fit modest volumes and tight budgets — without
                   sacrificing accuracy, compliance or response time.
                 </p>
               </AnimatedSection>

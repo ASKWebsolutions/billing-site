@@ -45,6 +45,10 @@ const navItems = [
         { label: 'Home Health Billing', path: '/services#home-health' },
         { label: 'Hospice Billing', path: '/services#hospice' },
       ]},
+      { heading: 'Practices', items: [
+        { label: 'Small Practice', path: '/projects/small' },
+        { label: 'Large Practice', path: '/projects/large' },
+      ]},
       { heading: 'Core Services', items: [
         { label: 'Claim Entry', path: '/services#claim-entry' },
         { label: 'Claims Scrubbing & Submission', path: '/services#claims-scrubbing' },
@@ -55,10 +59,6 @@ const navItems = [
         { label: 'Denial Management', path: '/services#denial-management' },
         { label: 'Credentialing & Enrollment', path: '/services#credentialing' },
         { label: 'Free Audit', path: '/services#free-audit' },
-      ]},
-      { heading: 'Projects', items: [
-        { label: 'Small Project', path: '/projects/small' },
-        { label: 'Large Project', path: '/projects/large' },
       ]},
     ],
   },
