@@ -41,6 +41,7 @@ import {
   Target,
   TrendingUp,
   Users,
+  X,
   Zap,
 } from 'lucide-react'
 import {
@@ -830,6 +831,7 @@ function CapabilityExplorer() {
 
 function WhyInHouse() {
   const [active, setActive] = useState(0)
+  const [openIndex, setOpenIndex] = useState(null)
 
   const risks = [
     {
@@ -863,6 +865,20 @@ function WhyInHouse() {
   ]
 
   const current = risks[active !== null ? active : 0]
+
+  useEffect(() => {
+    if (openIndex === null) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpenIndex(null)
+    }
+    document.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [openIndex])
 
   return (
     <section className="relative overflow-hidden bg-[#0D1629] py-20 lg:py-28">
@@ -918,57 +934,108 @@ function WhyInHouse() {
               {risks.map((r, i) => {
                 const open = active === i
                 return (
-                  <div
+                  <button
                     key={r.title}
-                    className={`overflow-hidden rounded-xl border transition-colors duration-300 ${
+                    type="button"
+                    onClick={() => {
+                      setActive(i)
+                      setOpenIndex(i)
+                    }}
+                    aria-haspopup="dialog"
+                    className={`group flex w-full items-center gap-3.5 rounded-xl border p-4 text-left transition-colors duration-300 ${
                       open ? 'border-[#00D9C7]/40 bg-[#0B1428]/60' : 'border-white/[0.07] bg-[#0B1428]/40 hover:border-[#00D9C7]/30'
                     }`}
                   >
-                    <button
-                      type="button"
-                      onClick={() => setActive(open ? null : i)}
-                      aria-expanded={open}
-                      className="flex w-full items-center gap-3.5 p-4 text-left"
+                    <span
+                      className={`flex size-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-extrabold transition-colors duration-300 ${
+                        open ? 'bg-[#00D9C7] text-[#0B1428]' : 'bg-white/5 text-[#00D9C7]'
+                      }`}
                     >
-                      <span
-                        className={`flex size-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-extrabold transition-colors duration-300 ${
-                          open ? 'bg-[#00D9C7] text-[#0B1428]' : 'bg-white/5 text-[#00D9C7]'
-                        }`}
-                      >
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                      <p className={`flex-1 text-sm font-bold transition-colors duration-300 ${open ? 'text-white' : 'text-[#F7F8FA]'}`}>
-                        {r.title}
-                      </p>
-                      <span
-                        className={`flex size-6 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
-                          open ? 'rotate-180 bg-[#00D9C7]/15 text-[#00D9C7]' : 'bg-white/5 text-[#B8C5D8]'
-                        }`}
-                      >
-                        <ChevronDown size={14} strokeWidth={2.5} />
-                      </span>
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {open && (
-                        <motion.div
-                          key="body"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: 'easeInOut' }}
-                          className="overflow-hidden"
-                        >
-                          <p className="px-4 pb-4 pl-[58px] text-[13px] leading-relaxed text-[#B8C5D8]">{r.desc}</p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className={`flex-1 text-sm font-bold transition-colors duration-300 ${open ? 'text-white' : 'text-[#F7F8FA]'}`}>
+                      {r.title}
+                    </p>
+                    <span className="hidden items-center gap-1 text-[11px] font-bold text-[#00D9C7] opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:flex">
+                      View details
+                    </span>
+                    <span
+                      className={`flex size-6 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+                        open ? 'bg-[#00D9C7]/15 text-[#00D9C7]' : 'bg-white/5 text-[#B8C5D8]'
+                      }`}
+                    >
+                      <ChevronDown size={14} strokeWidth={2.5} className="-rotate-90" />
+                    </span>
+                  </button>
                 )
               })}
             </div>
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {openIndex !== null && risks[openIndex] && (
+          <motion.div
+            key="risk-modal"
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setOpenIndex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={risks[openIndex].title}
+          >
+            <div className="absolute inset-0 bg-[#05080f]/80 backdrop-blur-sm" aria-hidden="true" />
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.97 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+              className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-[#17243A] shadow-2xl shadow-black/60 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#00D9C7]/30"
+            >
+              <div className="relative">
+                <img
+                  src={risks[openIndex].img}
+                  alt={risks[openIndex].title}
+                  className="aspect-[16/9] w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#17243A] via-[#17243A]/40 to-transparent" />
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(null)}
+                  aria-label="Close details"
+                  className="absolute right-4 top-4 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-[#00D9C7] hover:text-[#0B1428]"
+                >
+                  <X size={18} strokeWidth={2.5} />
+                </button>
+                <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-[#00D9C7] px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#0B1428]">
+                    <Users size={12} strokeWidth={3} /> {risks[openIndex].imgBadge}
+                  </span>
+                </div>
+              </div>
+              <div className="p-6 md:p-8">
+                <div className="flex items-center gap-3">
+                  <span className="flex size-9 items-center justify-center rounded-xl bg-[#00D9C7] text-sm font-extrabold text-[#0B1428]">
+                    {String(openIndex + 1).padStart(2, '0')}
+                  </span>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#00D9C7]">Risk Detail</p>
+                </div>
+                <h3 className="mt-4 text-xl font-extrabold text-[#F7F8FA] md:text-2xl">{risks[openIndex].title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#B8C5D8] md:text-[15px]">{risks[openIndex].desc}</p>
+                <div className="mt-5 rounded-2xl border border-white/10 bg-[#0B1428]/50 p-4">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#00D9C7]">How MBX protects you</p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-[#B8C5D8]">{risks[openIndex].imgCaption}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
