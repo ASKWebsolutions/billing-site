@@ -34,7 +34,7 @@ const tabs = [
     items: [
       'Precision ICD-10 and CPT coding aligned with documentation.',
       'Regular code audits to ensure compliance.',
-      'Specialty-specific coding expertise across all domains.',
+      'Speciality-specific coding expertise across all domains.',
       'Continuous education on coding updates and changes.',
       'Reducing claim denials through accurate code assignment.',
       'Maximizing reimbursement through proper code utilization.',

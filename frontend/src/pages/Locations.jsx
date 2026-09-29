@@ -14,25 +14,17 @@ const bandStats = [
 ]
 
 const SPECIALTY_OPTIONS = [
-  'Family Medicine',
-  'Internal Medicine',
-  'Pediatrics',
-  'Cardiology',
-  'Dermatology',
-  'OB/GYN',
-  'Orthopedics',
-  'Physical Therapy',
-  'Behavioral Health',
+  'Hospital / Health system',
+  'Mental / Behavioral Health',
+  'Physician Group',
+  'DME',
   'Urgent Care',
-  'Pain Management',
   'Home Health',
-  'Hospice',
-  'Dental',
   'Other',
 ]
 
 function ConsultationForm() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', practice: '', specialty: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', practice: '', specialty: '', specialtyOther: '' })
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
@@ -56,13 +48,13 @@ function ConsultationForm() {
           email: form.email,
           phone: form.phone,
           agencyName: form.practice,
-          specialty: form.specialty,
+          specialty: form.specialty === 'Other' ? form.specialtyOther || 'Other' : form.specialty,
           message: 'Free consultation request from the Locations page.',
         }),
       })
       if (res.ok) {
         setSent(true)
-        setForm({ name: '', email: '', phone: '', practice: '', specialty: '' })
+        setForm({ name: '', email: '', phone: '', practice: '', specialty: '', specialtyOther: '' })
       } else {
         const data = await res.json()
         setError(data.error || 'Something went wrong')
@@ -120,7 +112,7 @@ function ConsultationForm() {
           <input type="text" name="practice" value={form.practice} onChange={handleChange} placeholder="Your practice / organization" className={inputClass} />
         </div>
         <div>
-          <label className="mb-1 block text-sm font-bold text-mbx-navy">Specialty</label>
+          <label className="mb-1 block text-sm font-bold text-mbx-navy">Speciality</label>
           <select
             name="specialty"
             value={form.specialty}
@@ -132,6 +124,16 @@ function ConsultationForm() {
               <option key={o} value={o}>{o}</option>
             ))}
           </select>
+          {form.specialty === 'Other' && (
+            <input
+              type="text"
+              name="specialtyOther"
+              value={form.specialtyOther}
+              onChange={handleChange}
+              placeholder="Enter specialty"
+              className={`${inputClass} mt-2`}
+            />
+          )}
         </div>
         <button
           type="submit"

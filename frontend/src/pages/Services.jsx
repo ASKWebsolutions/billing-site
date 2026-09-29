@@ -301,9 +301,9 @@ export default function Services() {
         <div className="container mx-auto">
           <AnimatedSection>
             <SectionHeading
-              eyebrow="Specialties"
-              title="Explore Our Expertise Across Each Specialty"
-              subtitle="Our expertise at MBX Solutions spans across multiple medical specialties, delivering customized billing, credentialing, and revenue cycle management solutions tailored to each practice."
+              eyebrow="Specialities"
+              title="Explore Our Expertise Across Each Speciality"
+              subtitle="Our expertise at MBX Solutions spans across multiple medical specialities, delivering customized billing, credentialing, and revenue cycle management solutions tailored to each practice."
             />
           </AnimatedSection>
 

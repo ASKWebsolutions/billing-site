@@ -29,7 +29,7 @@ export default function SectionSpecialtiesScroll() {
         <div className="text-center mb-10">
           <p className="text-sm font-semibold text-[#29ABE2] mb-2 tracking-wide">EHR Flexible Medical Billing</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B3D66] leading-tight mb-2">
-            All Specialties
+            All Specialities
           </h2>
           <div className="w-[50px] h-[3px] bg-[#F5A623] mx-auto" />
         </div>

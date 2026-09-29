@@ -178,7 +178,7 @@ export default function AdminMessages() {
                   )}
                   {selectedMsg.specialty && (
                     <div className="rounded-xl border border-[#DEE4EB] bg-[#F5F8FA]/70 px-3.5 py-2.5">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#8A94A6]">Specialty</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#8A94A6]">Speciality</p>
                       <p className="mt-0.5 text-sm font-semibold text-[#0B2348]">{selectedMsg.specialty}</p>
                     </div>
                   )}

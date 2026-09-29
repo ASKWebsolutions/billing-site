@@ -4,20 +4,12 @@ import { CheckCircle, ArrowRight } from 'lucide-react'
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const SPECIALTY_OPTIONS = [
-  'Family Medicine',
-  'Internal Medicine',
-  'Pediatrics',
-  'Cardiology',
-  'Dermatology',
-  'OB/GYN',
-  'Orthopedics',
-  'Physical Therapy',
-  'Behavioral Health',
+  'Hospital / Health system',
+  'Mental / Behavioral Health',
+  'Physician Group',
+  'DME',
   'Urgent Care',
-  'Pain Management',
   'Home Health',
-  'Hospice',
-  'Dental',
   'Other',
 ]
 
@@ -236,7 +228,7 @@ export default function ContactForm({ compact, className }) {
                 placeholder="Select patient count"
               />
               <SmartSelect
-                label="Specialty"
+                label="Speciality"
                 options={SPECIALTY_OPTIONS}
                 value={form.specialty}
                 onChange={(v) => setForm((f) => ({ ...f, specialty: v }))}

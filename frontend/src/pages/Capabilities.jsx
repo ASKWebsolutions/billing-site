@@ -51,7 +51,7 @@ const capabilities = [
   },
   {
     number: 8,
-    title: 'Specialty Solutions',
+    title: 'Speciality Solutions',
     description: 'Home Health, Hospice, Behavioral Health, Physical Therapy, Cardiology and more — coded and billed by MBX Solutions specialists.',
     link: '/services#free-audit',
   },

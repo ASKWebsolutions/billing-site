@@ -25,7 +25,7 @@ const approach = [
 const expertise = [
   { icon: FileText, title: 'Home Health Depth', desc: 'PDGM, OASIS, LUPA — MBX Solutions understands the complexities of home health billing.' },
   { icon: Shield, title: 'Hospice Specialization', desc: 'NOE/NOTR, revenue codes, GIP/respite — MBX Solutions provides hospice-specific expertise.' },
-  { icon: Users, title: 'Multi-Specialty Support', desc: 'From private practices to health systems, MBX Solutions scales to your needs.' },
+  { icon: Users, title: 'Multi-Speciality Support', desc: 'From private practices to health systems, MBX Solutions scales to your needs.' },
   { icon: Zap, title: 'Technology Integration', desc: 'Modern MBX Solutions workflows that work alongside your existing systems.' },
   { icon: CheckCircle, title: 'Quality Assurance', desc: 'Documentation review, coding accuracy, and claims quality checks.' },
   { icon: TrendingUp, title: 'Operational Excellence', desc: 'Consistent, reliable revenue cycle support you can depend on from MBX Solutions.' },

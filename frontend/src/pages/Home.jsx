@@ -510,7 +510,7 @@ function SpecialtiesSection() {
           <p className="text-sm font-semibold text-mbx-teal mb-2 tracking-wide uppercase">Beyond Home Health & Hospice</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-mbx-navy leading-tight mb-3">
             Expertise Across{' '}
-            <span className="text-mbx-teal">Medical Specialties</span>
+            <span className="text-mbx-teal">Medical Specialities</span>
           </h2>
           <div className="w-[60px] h-[3px] bg-mbx-teal mx-auto mb-5" />
           <p className="text-[15px] text-mbx-text-muted max-w-2xl mx-auto leading-relaxed">
@@ -571,7 +571,7 @@ function SpecialtiesSection() {
         <AnimatedSection delay={0.4}>
           <div className="mt-12 text-center">
             <Link to="/services" className="inline-flex items-center gap-2 text-sm font-bold text-mbx-teal hover:text-[#5A9AD0] transition-colors">
-              View All Specialties <ArrowRight size={14} />
+              View All Specialities <ArrowRight size={14} />
             </Link>
           </div>
         </AnimatedSection>
