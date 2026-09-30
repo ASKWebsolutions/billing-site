@@ -1823,16 +1823,16 @@ export function FinalCta() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="mailto:hello@billingoneiota.com"
+                href="mailto:info@mbxsol.com"
                 className="inline-flex items-center gap-2.5 rounded-full border border-white/10 px-5 py-2.5 text-sm font-bold text-[#B8C5D8] transition-colors hover:border-[#00D9C7]/40 hover:text-[#00D9C7]"
               >
-                <Mail size={16} /> hello@billingoneiota.com
+                <Mail size={16} /> info@mbxsol.com
               </a>
               <a
-                href="tel:+18000000000"
+                href="tel:+18883706494"
                 className="inline-flex items-center gap-2.5 rounded-full border border-white/10 px-5 py-2.5 text-sm font-bold text-[#B8C5D8] transition-colors hover:border-[#00D9C7]/40 hover:text-[#00D9C7]"
               >
-                <Phone size={16} /> (800) 000-0000
+                <Phone size={16} /> +1 (888) 370-6494
               </a>
             </div>
           </div>

@@ -240,11 +240,11 @@ export default function FAQs() {
                   Our team replies the same business day. Ask us anything about billing, coding, or collections.
                 </p>
                 <div className="mt-4 space-y-2.5">
-                  <a href="mailto:hello@mbxsol.com" className="flex items-center gap-2.5 text-sm font-bold text-mbx-teal-light hover:text-white transition-colors">
-                    <Mail size={15} /> hello@mbxsol.com
+                  <a href="mailto:info@mbxsol.com" className="flex items-center gap-2.5 text-sm font-bold text-mbx-teal-light hover:text-white transition-colors">
+                    <Mail size={15} /> info@mbxsol.com
                   </a>
-                  <a href="tel:+18000000000" className="flex items-center gap-2.5 text-sm font-bold text-mbx-teal-light hover:text-white transition-colors">
-                    <Phone size={15} /> (800) 000-0000
+                  <a href="tel:+18883706494" className="flex items-center gap-2.5 text-sm font-bold text-mbx-teal-light hover:text-white transition-colors">
+                    <Phone size={15} /> +1 (888) 370-6494
                   </a>
                 </div>
                 <Link
