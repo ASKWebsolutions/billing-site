@@ -3,15 +3,15 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import { v2 as cloudinary } from 'cloudinary'
 import jwt from 'jsonwebtoken'
-import multer from 'multer'
-import { CloudinaryStorage } from 'multer-storage-cloudinary'
 
 // ── Models ──
 const gallerySchema = new mongoose.Schema({
   title: { type: String, required: true },
   category: { type: String, default: 'General' },
   url: { type: String, required: true },
-  publicId: { type: String, required: true },
+  // Only set for images we uploaded ourselves. Gallery entries added by URL
+  // have no Cloudinary asset, so cleanup must treat it as optional.
+  publicId: { type: String, default: '' },
   order: { type: Number, default: 0 },
 }, { timestamps: true })
 
@@ -99,18 +99,51 @@ async function connectDB() {
 }
 
 // ── Cloudinary ──
+// Gallery images are referenced by URL rather than uploaded, so this is only
+// used to clean up assets we uploaded ourselves.
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-// ── Multer ──
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: { folder: 'mbx-gallery', allowed_formats: ['jpg', 'jpeg', 'png', 'webp'], transformation: [{ width: 1200, height: 800, crop: 'limit' }] },
-})
-const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } })
+// ── Image URL Validation ────────────────────────────────────────────────────
+// Gallery entries are plain links, so a typo or a dead page would otherwise
+// save happily and render as a broken image. Confirm the host answers and
+// really is serving an image before accepting the URL.
+async function validateImageUrl(raw) {
+  const value = String(raw || '').trim()
+  if (!value) return { ok: false, error: 'Image URL is required' }
+  if (value.length > 2000) return { ok: false, error: 'Image URL is too long' }
+
+  let parsed
+  try {
+    parsed = new URL(value)
+  } catch {
+    return { ok: false, error: 'That does not look like a valid link' }
+  }
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    return { ok: false, error: 'Only http or https links are allowed' }
+  }
+
+  let res
+  try {
+    res = await fetch(value, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(8000) })
+  } catch {
+    return { ok: false, error: 'Could not reach that link. Check it opens in a browser.' }
+  }
+
+  // Some hosts reject HEAD outright; only treat that as a hard failure.
+  if (!res.ok && res.status !== 405) {
+    return { ok: false, error: `That link returned error ${res.status}` }
+  }
+
+  const type = (res.headers.get('content-type') || '').toLowerCase()
+  if (type && !type.startsWith('image/')) {
+    return { ok: false, error: 'That link is not an image' }
+  }
+  return { ok: true, url: value }
+}
 
 // ── Auth Middleware ──
 const auth = (req, res, next) => {
@@ -124,8 +157,46 @@ const auth = (req, res, next) => {
 
 // ── Express App ──
 const app = express()
+app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
+
+// ── Login Rate Limiting ─────────────────────────────────────────────────────
+// There is a single admin account, so an unguarded login endpoint lets anyone
+// grind through passwords. Count failures per client IP and per email, and
+// refuse further attempts once either threshold trips.
+const LOGIN_MAX_FAILURES = 5
+const LOGIN_LOCKOUT_MS = 15 * 60 * 1000
+const loginFailures = new Map()
+
+// Drop expired entries so the map cannot grow without bound on a long-lived
+// process.
+setInterval(() => {
+  const now = Date.now()
+  for (const [key, rec] of loginFailures) {
+    if (!rec.until || rec.until <= now) loginFailures.delete(key)
+  }
+}, LOGIN_LOCKOUT_MS).unref()
+
+function secondsUntilFree(key) {
+  const rec = loginFailures.get(key)
+  if (!rec || !rec.until) return 0
+  return rec.until > Date.now() ? Math.ceil((rec.until - Date.now()) / 1000) : 0
+}
+
+function noteLoginFailure(key) {
+  const rec = loginFailures.get(key) || { count: 0, until: 0 }
+  rec.count += 1
+  if (rec.count >= LOGIN_MAX_FAILURES) {
+    rec.until = Date.now() + LOGIN_LOCKOUT_MS
+    rec.count = 0
+  }
+  loginFailures.set(key, rec)
+}
+
+function clearLoginFailures(key) {
+  loginFailures.delete(key)
+}
 
 // Health
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }))
@@ -134,9 +205,33 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }))
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' })
+
+  const ip = req.ip || 'unknown'
+  const keys = [`ip:${ip}`, `email:${String(email).toLowerCase()}`]
+  const wait = Math.max(...keys.map(secondsUntilFree))
+  if (wait > 0) {
+    res.set('Retry-After', String(wait))
+    return res.status(429).json({
+      error: `Too many failed attempts. Try again in ${Math.ceil(wait / 60)} minute(s).`,
+    })
+  }
+
   if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+    keys.forEach(clearLoginFailures)
     const token = jwt.sign({ email, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '7d' })
     return res.json({ token, email, role: 'admin' })
+  }
+
+  // Count the failure against both keys, and delay the reply so a tight script
+  // cannot test passwords any faster than the lockout allows.
+  keys.forEach(noteLoginFailure)
+  const locked = keys.some((k) => secondsUntilFree(k) > 0)
+  if (locked) {
+    const wait = Math.max(...keys.map(secondsUntilFree))
+    res.set('Retry-After', String(wait))
+    return res.status(429).json({
+      error: `Too many failed attempts. Try again in ${Math.ceil(wait / 60)} minute(s).`,
+    })
   }
   res.status(401).json({ error: 'Invalid email or password' })
 })
@@ -150,23 +245,50 @@ app.get('/api/gallery', async (req, res) => {
   res.json(images)
 })
 
-app.post('/api/gallery', upload.single('image'), async (req, res) => {
+// Admin - add a gallery entry by image URL
+app.post('/api/gallery', auth, async (req, res) => {
   await connectDB()
-  if (!req.file) return res.status(400).json({ error: 'No image' })
-  const image = await Gallery.create({ title: req.body.title || 'Untitled', category: req.body.category || 'General', url: req.file.path, publicId: req.file.filename })
+  const { title, category, url } = req.body
+  const check = await validateImageUrl(url)
+  if (!check.ok) return res.status(400).json({ error: check.error })
+
+  const duplicate = await Gallery.findOne({ url: check.url })
+  if (duplicate) return res.status(400).json({ error: 'That image is already in the gallery' })
+
+  const image = await Gallery.create({
+    title: String(title || '').trim().slice(0, 120) || 'Untitled',
+    category: String(category || 'General').trim().slice(0, 40) || 'General',
+    url: check.url,
+  })
   res.status(201).json(image)
 })
 
-app.put('/api/gallery/:id', async (req, res) => {
+app.put('/api/gallery/:id', auth, async (req, res) => {
   await connectDB()
-  const image = await Gallery.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  const { title, category, url } = req.body
+  const update = {}
+  if (title !== undefined) update.title = String(title).trim().slice(0, 120) || 'Untitled'
+  if (category !== undefined) update.category = String(category).trim().slice(0, 40) || 'General'
+  if (url !== undefined && url !== '') {
+    const check = await validateImageUrl(url)
+    if (!check.ok) return res.status(400).json({ error: check.error })
+    const duplicate = await Gallery.findOne({ url: check.url, _id: { $ne: req.params.id } })
+    if (duplicate) return res.status(400).json({ error: 'That image is already in the gallery' })
+    update.url = check.url
+  }
+  const image = await Gallery.findByIdAndUpdate(req.params.id, update, { new: true })
+  if (!image) return res.status(404).json({ error: 'Image not found' })
   res.json(image)
 })
 
-app.delete('/api/gallery/:id', async (req, res) => {
+app.delete('/api/gallery/:id', auth, async (req, res) => {
   await connectDB()
   const image = await Gallery.findById(req.params.id)
-  if (image) { await cloudinary.uploader.destroy(image.publicId); await Gallery.findByIdAndDelete(req.params.id) }
+  if (image) {
+    // Only clean up Cloudinary for assets we uploaded; URL entries have none.
+    if (image.publicId) await cloudinary.uploader.destroy(image.publicId).catch(() => {})
+    await Gallery.findByIdAndDelete(req.params.id)
+  }
   res.json({ message: 'Deleted' })
 })
 
@@ -179,19 +301,20 @@ app.post('/api/contact', async (req, res) => {
   res.status(201).json(submission)
 })
 
-app.get('/api/contact', async (req, res) => {
+// Admin - reads contact submissions, which include patient names and emails
+app.get('/api/contact', auth, async (req, res) => {
   await connectDB()
   const contacts = await Contact.find().sort({ createdAt: -1 })
   res.json(contacts)
 })
 
-app.patch('/api/contact/:id', async (req, res) => {
+app.patch('/api/contact/:id', auth, async (req, res) => {
   await connectDB()
   const submission = await Contact.findByIdAndUpdate(req.params.id, { read: true }, { new: true })
   res.json(submission)
 })
 
-app.delete('/api/contact/:id', async (req, res) => {
+app.delete('/api/contact/:id', auth, async (req, res) => {
   await connectDB()
   await Contact.findByIdAndDelete(req.params.id)
   res.json({ message: 'Deleted' })
@@ -212,13 +335,14 @@ app.post('/api/testimonials/submit', async (req, res) => {
   res.status(201).json({ message: 'Review submitted. It will appear after approval.' })
 })
 
-app.get('/api/testimonials/all', async (req, res) => {
+// Admin - includes unapproved submissions, so it must not be public
+app.get('/api/testimonials/all', auth, async (req, res) => {
   await connectDB()
   const testimonials = await Testimonial.find().sort({ order: 1, createdAt: -1 })
   res.json(testimonials)
 })
 
-app.post('/api/testimonials', async (req, res) => {
+app.post('/api/testimonials', auth, async (req, res) => {
   await connectDB()
   const { name, role, content, rating } = req.body
   if (!name || !role || !content) return res.status(400).json({ error: 'Name, role and content required' })
@@ -226,13 +350,13 @@ app.post('/api/testimonials', async (req, res) => {
   res.status(201).json(testimonial)
 })
 
-app.put('/api/testimonials/:id', async (req, res) => {
+app.put('/api/testimonials/:id', auth, async (req, res) => {
   await connectDB()
   const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, req.body, { new: true })
   res.json(testimonial)
 })
 
-app.delete('/api/testimonials/:id', async (req, res) => {
+app.delete('/api/testimonials/:id', auth, async (req, res) => {
   await connectDB()
   await Testimonial.findByIdAndDelete(req.params.id)
   res.json({ message: 'Deleted' })
@@ -276,6 +400,46 @@ app.get('/api/blog/categories', async (req, res) => {
   try {
     const cats = await Blog.distinct('category', { published: true })
     res.json(cats)
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+// Public - blog sitemap with live slugs
+// Static pages ship in public/sitemap.xml; this endpoint covers blog posts
+// so newly published articles are discoverable without a redeploy.
+const SITE_ORIGIN = (process.env.SITE_URL || 'https://mbxsol.com').replace(/\/+$/, '')
+
+app.get('/api/sitemap.xml', async (req, res) => {
+  await connectDB()
+  try {
+    const posts = await Blog.find({ published: true })
+      .select('slug updatedAt createdAt')
+      .sort({ createdAt: -1 })
+      .lean()
+
+    const urls = posts
+      .map(p => {
+        const lastmod = new Date(p.updatedAt || p.createdAt || Date.now()).toISOString().slice(0, 10)
+        return [
+          '  <url>',
+          `    <loc>${SITE_ORIGIN}/blog/${p.slug}</loc>`,
+          `    <lastmod>${lastmod}</lastmod>`,
+          '    <changefreq>monthly</changefreq>',
+          '    <priority>0.6</priority>',
+          '  </url>',
+        ].join('\n')
+      })
+      .join('\n')
+
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      urls,
+      '</urlset>',
+    ].filter(Boolean).join('\n')
+
+    res.set('Content-Type', 'application/xml; charset=utf-8')
+    res.set('Cache-Control', 'public, max-age=3600')
+    res.send(xml)
   } catch (err) { res.status(500).json({ error: err.message }) }
 })
 
