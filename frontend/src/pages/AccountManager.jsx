@@ -2,6 +2,7 @@ import { UserCheck, LineChart, CalendarCheck2, FileSearch, Zap, BarChart3, Phone
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton, SecondaryButton, ProcessStep } from '../components/UI'
 import { Link } from 'react-router-dom'
+import { usePageSeo } from '../hooks/useSeo'
 
 const accountManagerFeatures = [
   { icon: UserCheck, title: 'Single Point of Contact', desc: 'You get one dedicated Account Manager who knows your practice inside-out. No phone tag, no repeating your story to a new person each month.' },
@@ -28,6 +29,7 @@ const commitments = [
 ]
 
 export default function AccountManager() {
+  usePageSeo('/account-manager')
   return (
     <>
       {/* Hero */}

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { PageHeader, EmptyState, ConfirmDialog, Toast } from '../../components/admin/AdminUI'
-import { Upload, Trash2, Image, Grid3X3, List } from 'lucide-react'
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { Trash2, Image, Grid3X3, List, Plus, Link2 } from 'lucide-react'
+import { API, adminHeaders, handleUnauthorized } from '../../utils/adminApi'
 
 export default function AdminGallery() {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
   const [category, setCategory] = useState('General')
   const [view, setView] = useState('grid')
   const [filter, setFilter] = useState('All')
@@ -26,26 +26,39 @@ export default function AdminGallery() {
   const filtered = filter === 'All' ? images : images.filter(i => i.category === filter)
 
   const handleUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
+    e.preventDefault()
+    const link = url.trim()
+    if (!link || uploading) return
     setUploading(true)
-    const fd = new FormData()
-    fd.append('image', file)
-    fd.append('title', title || file.name)
-    fd.append('category', category)
     try {
-      const res = await fetch(`${API}/api/gallery`, { method: 'POST', body: fd })
-      if (res.ok) { setToast({ message: 'Image uploaded successfully', type: 'success' }); setTitle(''); fetchImages() }
-      else setToast({ message: 'Upload failed', type: 'error' })
-    } catch { setToast({ message: 'Upload failed', type: 'error' }) }
-    setUploading(false)
+      const res = await fetch(`${API}/api/gallery`, {
+        method: 'POST',
+        headers: adminHeaders(),
+        body: JSON.stringify({ title: title.trim() || 'Untitled', category, url: link }),
+      })
+      if (handleUnauthorized(res)) return
+      const data = await res.json().catch(() => ({}))
+      if (res.ok) {
+        setToast({ message: 'Image added to gallery', type: 'success' })
+        setTitle('')
+        setUrl('')
+        fetchImages()
+      } else {
+        setToast({ message: data.error || 'Could not add image', type: 'error' })
+      }
+    } catch {
+      setToast({ message: 'Could not reach the server', type: 'error' })
+    } finally {
+      setUploading(false)
+    }
   }
 
   const handleDelete = async () => {
     if (!confirmDelete) return
-    await fetch(`${API}/api/gallery/${confirmDelete}`, { method: 'DELETE' })
+    const res = await fetch(`${API}/api/gallery/${confirmDelete}`, { method: 'DELETE', headers: adminHeaders() })
+    if (handleUnauthorized(res)) return
     setConfirmDelete(null)
-    setToast({ message: 'Image deleted', type: 'success' })
+    setToast({ message: 'Image removed', type: 'success' })
     fetchImages()
   }
 
@@ -53,32 +66,46 @@ export default function AdminGallery() {
     <div>
       <PageHeader title="Gallery" subtitle={`${images.length} images uploaded`} />
 
-      {/* Upload Card */}
+      {/* Add by URL */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-6 rounded-2xl border border-[#DEE4EB] bg-white p-5">
-        <h3 className="mb-4 text-sm font-extrabold text-[#0B2348]">Upload New Image</h3>
-        <div className="flex flex-wrap gap-3 items-end">
-          <div className="flex-1 min-w-[180px]">
-            <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Title</label>
-            <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Image title"
-              className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
+        <h3 className="mb-1 text-sm font-extrabold text-[#0B2348]">Add Image</h3>
+        <p className="mb-4 text-xs text-[#5A6B82]">Paste a direct image link. It is checked before saving, so broken links will not appear on the site.</p>
+        <form onSubmit={handleUpload}>
+          <div className="flex flex-wrap gap-3 items-end">
+            <div className="flex-1 min-w-[180px]">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Title</label>
+              <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Image title"
+                className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
+            </div>
+            <div className="min-w-[140px]">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Category</label>
+              <select value={category} onChange={e => setCategory(e.target.value)}
+                className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white">
+                <option>General</option>
+                <option>Team</option>
+                <option>Office</option>
+                <option>Events</option>
+                <option>Operations</option>
+              </select>
+            </div>
           </div>
-          <div className="min-w-[140px]">
-            <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Category</label>
-            <select value={category} onChange={e => setCategory(e.target.value)}
-              className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white">
-              <option>General</option>
-              <option>Team</option>
-              <option>Office</option>
-              <option>Events</option>
-              <option>Operations</option>
-            </select>
+          <div className="mt-3 flex flex-wrap gap-3 items-end">
+            <div className="flex-1 min-w-[240px]">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Image URL</label>
+              <div className="relative">
+                <Link2 size={15} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A94A6]" />
+                <input value={url} onChange={e => setUrl(e.target.value)} type="url" required
+                  placeholder="https://images.unsplash.com/photo-..."
+                  className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] py-2.5 pl-11 pr-4 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
+              </div>
+            </div>
+            <button type="submit" disabled={uploading || !url.trim()}
+              className="inline-flex items-center gap-2 rounded-xl bg-[#4486BF] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-[#4486BF]/20 transition-all hover:bg-[#3a73a8] hover:shadow-lg hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0">
+              <Plus size={15} />
+              {uploading ? 'Checking...' : 'Add Image'}
+            </button>
           </div>
-          <label className="inline-flex items-center gap-2 rounded-xl bg-[#4486BF] px-5 py-2.5 text-sm font-bold text-white cursor-pointer shadow-md shadow-[#4486BF]/20 transition-all hover:bg-[#3a73a8] hover:shadow-lg hover:-translate-y-0.5">
-            <Upload size={15} />
-            {uploading ? 'Uploading...' : 'Choose File'}
-            <input type="file" accept="image/*" onChange={handleUpload} className="hidden" disabled={uploading} />
-          </label>
-        </div>
+        </form>
       </motion.div>
 
       {/* Filters + View Toggle */}
@@ -117,7 +144,7 @@ export default function AdminGallery() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <EmptyState icon={Image} title="No images yet" description="Upload your first image to get started." />
+        <EmptyState icon={Image} title="No images yet" description="Add your first image using the link box above." />
       ) : view === 'grid' ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((img, i) => (
@@ -158,7 +185,7 @@ export default function AdminGallery() {
       )}
 
       <ConfirmDialog isOpen={!!confirmDelete} onClose={() => setConfirmDelete(null)} onConfirm={handleDelete}
-        title="Delete Image" message="This action cannot be undone. The image will be permanently removed from Cloudinary." />
+        title="Delete Image" message="This action cannot be undone. The image will be removed from your gallery." />
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>
   )

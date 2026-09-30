@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "npx vite build",
     "lint": "oxlint",
+    "test:seo": "node scripts/test-seo.mjs",
+    "test:chat": "node scripts/test-chat-alert.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

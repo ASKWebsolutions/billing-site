@@ -4,6 +4,8 @@ import { MapPin, ArrowRight, ShieldCheck, Banknote, Clock, CheckCircle, Stethosc
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
 import { LOCATIONS } from '../data/locations'
+import { usePageSeo } from '../hooks/useSeo'
+import { breadcrumbSchema, absoluteUrl } from '../utils/seo'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
@@ -149,6 +151,25 @@ function ConsultationForm() {
 }
 
 export default function Locations() {
+  usePageSeo('/locations', {
+    jsonLd: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Locations', path: '/locations' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Medical Billing Services by State',
+        itemListElement: LOCATIONS.map((loc, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: `Medical Billing Services in ${loc.name}`,
+          url: absoluteUrl(`/locations/${loc.slug}`),
+        })),
+      },
+    ],
+  })
   return (
     <>
       <section className="relative overflow-hidden bg-mbx-navy pt-40 pb-20 lg:pt-48 lg:pb-28">

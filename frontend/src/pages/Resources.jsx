@@ -2,6 +2,7 @@ import { FileText, BookOpen, Shield, BarChart3, Download, CheckCircle } from 'lu
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton, SecondaryButton } from '../components/UI'
 import { Link } from 'react-router-dom'
+import { usePageSeo } from '../hooks/useSeo'
 
 const resources = [
   { icon: FileText, title: 'Free Billing Audit', desc: 'Get a free revenue leakage analysis from MBX Solutions and identify untapped revenue opportunities for your practice.', path: '/services#free-audit', color: 'from-mbx-teal/20 to-mbx-teal/5' },
@@ -20,6 +21,7 @@ const quickFacts = [
 ]
 
 export default function Resources() {
+  usePageSeo('/resources')
   return (
     <>
       {/* Hero */}

@@ -161,7 +161,7 @@ export default function HeroSection() {
                   </span>
                 )}
 
-                <motion.h1
+                <motion.p
                   className="text-[1.7rem] font-extrabold tracking-tight text-mbx-navy sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem] leading-[1.08]"
                   initial="hidden"
                   animate="visible"
@@ -181,7 +181,13 @@ export default function HeroSection() {
                       {i === slide.highlightIndex ? <span className="text-[#00B8A9]">{line}</span> : line}
                     </motion.span>
                   ))}
-                </motion.h1>
+                </motion.p>
+
+                {/* Stable, non-rotating h1 so crawlers always read a single
+                    keyword-relevant headline instead of one of three slides. */}
+                <h1 className="sr-only">
+                  Healthcare Revenue Cycle Management Services for Home Health, Hospice and Physician Practices
+                </h1>
 
                 {slide.para && (
                   <motion.p

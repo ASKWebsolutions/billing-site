@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Home, ArrowLeft, Search } from 'lucide-react'
+import useSeo from '../hooks/useSeo'
 
 export default function NotFound() {
+  useSeo({
+    title: 'Page Not Found',
+    description: 'The page you are looking for does not exist or has been moved.',
+    noindex: true,
+  })
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-atmos overflow-hidden">
       {/* Background */}

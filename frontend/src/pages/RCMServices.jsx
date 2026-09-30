@@ -1,6 +1,7 @@
 import { FilePlus2, ScrollText, Milestone, ShieldAlert, ClipboardCheck, TrendingUp, CheckCircle } from 'lucide-react'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const services = [
   { icon: FilePlus2, title: 'Claim Entry & Submission', desc: 'MBX Solutions provides clean claim entry and electronic submission designed to minimize rejections and denials.', id: 'claim-entry' },
@@ -12,6 +13,7 @@ const services = [
 ]
 
 export default function RCMServices() {
+  usePageSeo('/rcm-services')
   return (
     <>
       {/* Hero */}

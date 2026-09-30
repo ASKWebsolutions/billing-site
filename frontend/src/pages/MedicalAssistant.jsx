@@ -1,6 +1,7 @@
 import { Stethoscope, CalendarClock, ShieldCheck, FileCheck2, Users, ClipboardList } from 'lucide-react'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const specialities = ['Home Health', 'Hospice', 'Behavioral Health', 'Physical Therapy', 'Occupational Therapy', 'Cardiology', 'Internal Medicine', 'Psychiatric', 'Dental']
 
@@ -16,6 +17,7 @@ const services = [
 const steps = ['Referral', 'Intake', 'Scheduling', 'Documentation', 'Follow-up', 'Billing']
 
 export default function MedicalAssistant() {
+  usePageSeo('/medical-assistant')
   return (
     <>
       {/* Hero */}

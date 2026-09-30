@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
 import SectionStatsGrid from '../components/SectionStatsGrid'
+import { usePageSeo } from '../hooks/useSeo'
 
 const capabilities = [
   { icon: Building2, title: 'Multi-Site Billing Ops', desc: 'MBX Solutions delivers unified billing across multiple facilities and locations — one dashboard, one team, consistent results.' },
@@ -22,6 +23,7 @@ const stats = [
 ]
 
 export default function LargeProject() {
+  usePageSeo('/projects/large')
   return (
     <>
       {/* Hero */}

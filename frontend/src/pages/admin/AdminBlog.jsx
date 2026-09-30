@@ -4,18 +4,13 @@ import { PageHeader, EmptyState, ConfirmDialog, Toast } from '../../components/a
 import {
   Plus, Pencil, Trash2, Eye, EyeOff, X, Search, FileText, ImageIcon, Loader2, LinkIcon,
 } from 'lucide-react'
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API, adminHeaders, handleUnauthorized } from '../../utils/adminApi'
 
 const emptyForm = {
   title: '', excerpt: '', content: '', category: 'General', tags: '', author: 'MBX Solutions', published: false, coverImage: '',
 }
 
 const CATEGORIES = ['General', 'Billing', 'Coding', 'RCM', 'Compliance', 'Industry News']
-
-const authHeaders = () => ({
-  Authorization: `Bearer ${localStorage.getItem('mbx_admin_token')}`,
-})
 
 export default function AdminBlog() {
   const [posts, setPosts] = useState([])
@@ -32,15 +27,12 @@ export default function AdminBlog() {
   useEffect(() => { fetchPosts() }, [])
 
   const fetchPosts = () => {
-    fetch(`${API}/api/blog/admin/all`, { headers: authHeaders() })
+    fetch(`${API}/api/blog/admin/all`, { headers: adminHeaders() })
       .then(r => {
-        if (r.status === 401) {
-          setToast({ message: 'Session expired — please login again', type: 'error' })
-          return []
-        }
+        if (handleUnauthorized(r)) return null
         return r.json()
       })
-      .then(data => { setPosts(Array.isArray(data) ? data : []); setLoading(false) })
+      .then(data => { if (!data) return; setPosts(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => { setLoading(false) })
   }
 
@@ -81,7 +73,7 @@ export default function AdminBlog() {
       const url = editingId ? `${API}/api/blog/${editingId}` : `${API}/api/blog`
       const res = await fetch(url, {
         method: editingId ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeaders() },
+        headers: { 'Content-Type': 'application/json', ...adminHeaders() },
         body: JSON.stringify(form),
       })
       const data = await res.json().catch(() => ({}))
@@ -101,7 +93,7 @@ export default function AdminBlog() {
   const togglePublish = async (post) => {
     await fetch(`${API}/api/blog/${post._id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      headers: { 'Content-Type': 'application/json', ...adminHeaders() },
       body: JSON.stringify({ published: !post.published }),
     })
     setToast({ message: post.published ? `"${post.title.slice(0, 30)}..." unpublished` : `"${post.title.slice(0, 30)}..." published`, type: 'info' })
@@ -110,7 +102,7 @@ export default function AdminBlog() {
 
   const handleDelete = async () => {
     if (!confirmDelete) return
-    await fetch(`${API}/api/blog/${confirmDelete._id}`, { method: 'DELETE', headers: authHeaders() })
+    await fetch(`${API}/api/blog/${confirmDelete._id}`, { method: 'DELETE', headers: adminHeaders() })
     setConfirmDelete(null)
     setToast({ message: 'Post deleted', type: 'success' })
     fetchPosts()

@@ -2,8 +2,16 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { StatCard } from '../../components/admin/AdminUI'
 import { Image, MessageSquare, Star, TrendingUp, FileText } from 'lucide-react'
+import { API, adminHeaders, handleUnauthorized } from '../../utils/adminApi'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+// Parses the body only after confirming the session is still valid. Without
+// this a 401 body ({ error: 'Invalid token' }) reaches the code below, where
+// .filter is not a function and the dashboard silently renders all zeros.
+const getJSON = (path) =>
+  fetch(`${API}${path}`, { headers: adminHeaders() }).then((r) => {
+    if (handleUnauthorized(r)) return null
+    return r.json()
+  })
 
 export default function DashboardOverview() {
   const [stats, setStats] = useState({ gallery: 0, contacts: 0, testimonials: 0, unread: 0, blog: 0 })
@@ -12,11 +20,12 @@ export default function DashboardOverview() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${API}/api/gallery`).then(r => r.json()),
-      fetch(`${API}/api/contact`).then(r => r.json()),
-      fetch(`${API}/api/testimonials/all`).then(r => r.json()),
-      fetch(`${API}/api/blog/admin/all`, { headers: { Authorization: `Bearer ${localStorage.getItem('mbx_admin_token')}` } }).then(r => r.json()),
+      getJSON('/api/gallery'),
+      getJSON('/api/contact'),
+      getJSON('/api/testimonials/all'),
+      getJSON('/api/blog/admin/all'),
     ]).then(([gallery, contacts, testimonials, blogPosts]) => {
+      if (!gallery || !contacts || !testimonials || !blogPosts) return
       setStats({
         gallery: gallery.length,
         contacts: contacts.length,

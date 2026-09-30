@@ -1,6 +1,7 @@
 import { Shield, Quote, CheckCircle, HardHat, LockKeyhole, UserCheck, FileCheck2, Fingerprint, BadgeCheck } from 'lucide-react'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const importance = [
   "It increases personal privacy in terms of the healthcare information of the patients.",
@@ -59,6 +60,7 @@ const testimonials = [
 ]
 
 export default function HIPAA() {
+  usePageSeo('/hipaa')
   return (
     <>
       {/* Hero */}

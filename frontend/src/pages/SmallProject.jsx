@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
 import SectionStatsGrid from '../components/SectionStatsGrid'
+import { usePageSeo } from '../hooks/useSeo'
 
 const services = [
   { icon: FileCheck2, title: 'Claim Entry & Scrubbing', desc: 'MBX Solutions performs accurate claim entry, eligibility checks and scrubbing before submission so clean claims leave on the first pass.' },
@@ -14,6 +15,7 @@ const services = [
 const included = ['Fixed transparent pricing', 'Dedicated billing specialist', 'Weekly revenue reports', 'HIPAA-compliant workflows', 'No long-term contracts', 'Phone & email support']
 
 export default function SmallProject() {
+  usePageSeo('/projects/small')
   return (
     <>
       {/* Hero */}

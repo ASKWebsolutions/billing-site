@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { PageHeader, EmptyState } from '../../components/admin/AdminUI'
 import { useAuth } from '../../contexts/AuthContext'
+import { setActiveSession } from '../../utils/liveChat'
 import { MessageCircle, Send, Headset, ArrowLeft } from 'lucide-react'
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API, handleUnauthorized } from '../../utils/adminApi'
 
 const authHeaders = (token) => ({ 'Content-Type': 'application/json', Authorization: `Bearer ${token}` })
 
@@ -16,25 +16,48 @@ export default function AdminChat() {
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const listRef = useRef(null)
+  const lastSeenVisitorRef = useRef(null)
 
   const fetchSessions = useCallback(() => {
     fetch(`${API}/api/chat/admin/conversations`, { headers: authHeaders(token) })
-      .then((r) => r.json())
+      .then((r) => {
+        if (handleUnauthorized(r)) return null
+        return r.json()
+      })
       .then((data) => {
+        if (data === null) return
         if (Array.isArray(data)) setSessions(data)
         setLoading(false)
       })
       .catch(() => setLoading(false))
   }, [token])
 
+  const markRead = useCallback((id) => {
+    fetch(`${API}/api/chat/admin/${id}/read`, { method: 'POST', headers: authHeaders(token) })
+      .then((r) => { if (handleUnauthorized(r)) return null; return fetchSessions() })
+      .catch(() => {})
+  }, [token, fetchSessions])
+
   const fetchThread = useCallback((id) => {
     fetch(`${API}/api/chat/admin/${id}/messages`, { headers: authHeaders(token) })
-      .then((r) => r.json())
+      .then((r) => {
+        if (handleUnauthorized(r)) return null
+        return r.json()
+      })
       .then((data) => {
-        if (Array.isArray(data)) setMessages(data)
+        if (!Array.isArray(data)) return
+        setMessages(data)
+        // The backend only clears adminUnread when /read is posted, and it
+        // increments on every visitor message. Re-post while the admin is
+        // actually reading so the badge and alarm counter stay honest.
+        const newestVisitor = [...data].reverse().find((m) => m.sender === 'visitor')
+        if (newestVisitor && newestVisitor._id !== lastSeenVisitorRef.current) {
+          lastSeenVisitorRef.current = newestVisitor._id
+          markRead(id)
+        }
       })
       .catch(() => {})
-  }, [token])
+  }, [token, markRead])
 
   useEffect(() => {
     fetchSessions()
@@ -44,10 +67,17 @@ export default function AdminChat() {
 
   useEffect(() => {
     if (!selectedId) return
+    lastSeenVisitorRef.current = null
     fetchThread(selectedId)
     const id = setInterval(() => fetchThread(selectedId), 3000)
     return () => clearInterval(id)
   }, [selectedId, fetchThread])
+
+  // Tell the alarm poller which thread is on screen so it stays quiet.
+  useEffect(() => {
+    setActiveSession(selectedId)
+    return () => setActiveSession(null)
+  }, [selectedId])
 
   useEffect(() => {
     if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight
@@ -56,8 +86,7 @@ export default function AdminChat() {
   const openSession = (id) => {
     setSelectedId(id)
     fetchThread(id)
-    // Clear alarm for this session
-    fetch(`${API}/api/chat/admin/${id}/read`, { method: 'POST', headers: authHeaders(token) }).then(fetchSessions).catch(() => {})
+    markRead(id)
   }
 
   const handleSend = async (e) => {
@@ -67,14 +96,16 @@ export default function AdminChat() {
     setSending(true)
     setInput('')
     try {
-      const msg = await fetch(`${API}/api/chat/admin/${selectedId}/messages`, {
+      const res = await fetch(`${API}/api/chat/admin/${selectedId}/messages`, {
         method: 'POST',
         headers: authHeaders(token),
         body: JSON.stringify({ text }),
-      }).then((r) => r.json())
+      })
+      if (handleUnauthorized(res)) { setInput(text); return }
+      const msg = await res.json().catch(() => null)
       if (msg && msg._id) setMessages((prev) => [...prev, msg])
       fetchSessions()
-    } catch { /* ignore */ } finally {
+    } catch { setInput(text) } finally {
       setSending(false)
     }
   }

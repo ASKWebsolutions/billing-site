@@ -4,6 +4,7 @@ import { X, ArrowRight, ShieldCheck, CheckCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import TeamCard from '../components/TeamCard'
 import { teamMembers, TEAM_CATEGORIES, TEAM_STATS } from '../data/teamData'
+import { usePageSeo } from '../hooks/useSeo'
 
 const collage = [
   teamMembers[0].image,
@@ -89,6 +90,7 @@ function ProfileModal({ member, onClose }) {
 }
 
 export default function Team() {
+  usePageSeo('/team')
   const [active, setActive] = useState('all')
   const [selected, setSelected] = useState(null)
 

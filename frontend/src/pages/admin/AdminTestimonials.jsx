@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader, EmptyState, ConfirmDialog, Toast } from '../../components/admin/AdminUI'
 import { Star, Plus, Pencil, Trash2, Eye, EyeOff, Quote, X, Check, Ban, Clock, User, Shield } from 'lucide-react'
+import { API, adminHeaders, handleUnauthorized } from '../../utils/adminApi'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 const emptyForm = { name: '', role: '', content: '', rating: 5 }
 
 export default function AdminTestimonials() {
@@ -20,7 +20,10 @@ export default function AdminTestimonials() {
   useEffect(() => { fetchTestimonials() }, [])
 
   const fetchTestimonials = () => {
-    fetch(`${API}/api/testimonials/all`).then(r => r.json()).then(data => { setTestimonials(data); setLoading(false) }).catch(() => setLoading(false))
+    fetch(`${API}/api/testimonials/all`, { headers: adminHeaders() })
+      .then(r => { if (handleUnauthorized(r)) return null; return r.json() })
+      .then(data => { if (!data) return; setTestimonials(data); setLoading(false) })
+      .catch(() => setLoading(false))
   }
 
   const openForm = (t = null) => {
@@ -37,7 +40,8 @@ export default function AdminTestimonials() {
     const method = editingId ? 'PUT' : 'POST'
     const url = editingId ? `${API}/api/testimonials/${editingId}` : `${API}/api/testimonials`
     try {
-      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+      const res = await fetch(url, { method, headers: adminHeaders(), body: JSON.stringify(form) })
+      if (handleUnauthorized(res)) return
       if (res.ok) {
         setToast({ message: editingId ? 'Testimonial updated' : 'Testimonial added', type: 'success' })
         closeForm(); fetchTestimonials()
@@ -48,35 +52,39 @@ export default function AdminTestimonials() {
 
   const handleDelete = async () => {
     if (!confirmDelete) return
-    await fetch(`${API}/api/testimonials/${confirmDelete}`, { method: 'DELETE' })
+    const res = await fetch(`${API}/api/testimonials/${confirmDelete}`, { method: 'DELETE', headers: adminHeaders() })
+    if (handleUnauthorized(res)) return
     setConfirmDelete(null)
     setToast({ message: 'Testimonial deleted', type: 'success' })
     fetchTestimonials()
   }
 
   const approve = async (t) => {
-    await fetch(`${API}/api/testimonials/${t._id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(`${API}/api/testimonials/${t._id}`, {
+      method: 'PUT', headers: adminHeaders(),
       body: JSON.stringify({ approved: true }),
     })
+    if (handleUnauthorized(res)) return
     setToast({ message: `"${t.name}" approved and now visible on site`, type: 'success' })
     fetchTestimonials()
   }
 
   const reject = async (t) => {
-    await fetch(`${API}/api/testimonials/${t._id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(`${API}/api/testimonials/${t._id}`, {
+      method: 'PUT', headers: adminHeaders(),
       body: JSON.stringify({ approved: false }),
     })
+    if (handleUnauthorized(res)) return
     setToast({ message: `"${t.name}" rejected and hidden from site`, type: 'info' })
     fetchTestimonials()
   }
 
   const toggleActive = async (t) => {
-    await fetch(`${API}/api/testimonials/${t._id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(`${API}/api/testimonials/${t._id}`, {
+      method: 'PUT', headers: adminHeaders(),
       body: JSON.stringify({ active: !t.active }),
     })
+    if (handleUnauthorized(res)) return
     fetchTestimonials()
   }
 

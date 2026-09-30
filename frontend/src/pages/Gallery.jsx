@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from '../components/Animated'
 import { SectionHeading } from '../components/UI'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, ImageOff } from 'lucide-react'
+import { usePageSeo } from '../hooks/useSeo'
 
 export default function Gallery() {
+  usePageSeo('/gallery')
   const [images, setImages] = useState([])
   const [selected, setSelected] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [broken, setBroken] = useState(() => new Set())
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/gallery`)
@@ -96,7 +99,21 @@ export default function Gallery() {
                   className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer border border-mbx-border hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
                   onClick={() => setSelected(img)}
                 >
-                  <img src={img.url} alt={img.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  {broken.has(img._id) ? (
+                    <div className="flex h-full w-full flex-col items-center justify-center bg-mbx-surface text-mbx-text-muted">
+                      <ImageOff size={26} className="mb-2 opacity-50" />
+                      <p className="px-4 text-center text-xs">{img.title}</p>
+                    </div>
+                  ) : (
+                    <img
+                      src={img.url}
+                      alt={img.title}
+                      loading="lazy"
+                      decoding="async"
+                      onError={() => setBroken((prev) => new Set(prev).add(img._id))}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-mbx-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                     <p className="text-sm font-bold text-white">{img.title}</p>
@@ -134,7 +151,20 @@ export default function Gallery() {
             className="max-w-5xl max-h-[85vh] w-full"
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={selected.url} alt={selected.title} className="w-full h-full object-contain rounded-2xl" />
+            {broken.has(selected._id) ? (
+              <div className="flex aspect-[4/3] w-full flex-col items-center justify-center rounded-2xl bg-white/10 text-white/70">
+                <ImageOff size={40} className="mb-3 opacity-60" />
+                <p className="text-sm">This image could not be loaded</p>
+              </div>
+            ) : (
+              <img
+                src={selected.url}
+                alt={selected.title}
+                decoding="async"
+                onError={() => setBroken((prev) => new Set(prev).add(selected._id))}
+                className="w-full h-full object-contain rounded-2xl"
+              />
+            )}
             <div className="mt-4 text-center">
               <p className="text-lg font-bold text-white">{selected.title}</p>
               <p className="text-sm text-white/50">{selected.category}</p>

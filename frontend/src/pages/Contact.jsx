@@ -1,7 +1,9 @@
 import { AnimatedSection } from '../components/Animated'
 import ContactForm from '../components/ContactForm'
+import { usePageSeo } from '../hooks/useSeo'
 
 export default function Contact() {
+  usePageSeo('/connect-us')
   return (
     <>
       {/* Hero */}

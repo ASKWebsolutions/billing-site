@@ -1,6 +1,7 @@
 import { Target, Eye, Heart, Shield, Users, CheckCircle, Award, BadgeCheck, LockKeyhole, HardHat, Stethoscope, FileText, TrendingUp, Zap } from 'lucide-react'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton, SecondaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const stats = [
   { value: '98.5%', label: 'Billing Accuracy' },
@@ -38,6 +39,7 @@ const certificates = [
 ]
 
 export default function About() {
+  usePageSeo('/about')
   return (
     <>
       {/* Hero */}

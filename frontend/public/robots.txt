@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Admin dashboard has no public value and should never be indexed
+Disallow: /admin
+Disallow: /admin/
+
+# Filtered / paginated variants would create duplicate URLs
+Disallow: /*?category=
+Disallow: /*?search=
+Disallow: /*?limit=
+
+Sitemap: https://mbxsol.com/sitemap.xml
+Sitemap: https://mbxsol.com/api/sitemap.xml

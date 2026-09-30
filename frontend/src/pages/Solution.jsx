@@ -2,6 +2,7 @@ import { Layers, FileText, ClipboardCheck, BarChart3, Workflow, UserCheck, Check
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
 import PricingPlans from '../components/PricingPlans'
+import { usePageSeo } from '../hooks/useSeo'
 
 const pillars = [
   { icon: FileText, title: 'Medical Billing', desc: 'MBX Solutions delivers clean claims, faster payments, zero revenue leakage — full-cycle billing support from charge capture to payment posting.', id: 'billing', color: 'from-mbx-teal/20 to-mbx-teal/5' },
@@ -13,6 +14,7 @@ const pillars = [
 ]
 
 export default function Solution() {
+  usePageSeo('/solution')
   return (
     <>
       {/* Hero */}

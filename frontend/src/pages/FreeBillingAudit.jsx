@@ -12,8 +12,10 @@ import {
   CaseStudies,
   FinalCta,
 } from './HomeHealthHospice'
+import { usePageSeo } from '../hooks/useSeo'
 
 export default function FreeBillingAudit() {
+  usePageSeo('/free-billing-audit')
   return (
     <main className="bg-white">
       {/* HERO */}

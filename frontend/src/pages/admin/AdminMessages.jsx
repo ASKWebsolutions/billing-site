@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader, EmptyState, ConfirmDialog, Toast } from '../../components/admin/AdminUI'
 import { MessageSquare, Eye, Trash2, Mail, MailOpen, Phone, Clock, Search } from 'lucide-react'
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API, adminHeaders, handleUnauthorized } from '../../utils/adminApi'
 
 export default function AdminMessages() {
   const [contacts, setContacts] = useState([])
@@ -17,7 +16,10 @@ export default function AdminMessages() {
   useEffect(() => { fetchContacts() }, [])
 
   const fetchContacts = () => {
-    fetch(`${API}/api/contact`).then(r => r.json()).then(data => { setContacts(data); setLoading(false) }).catch(() => setLoading(false))
+    fetch(`${API}/api/contact`, { headers: adminHeaders() })
+      .then(r => { if (handleUnauthorized(r)) return null; return r.json() })
+      .then(data => { if (!data) return; setContacts(data); setLoading(false) })
+      .catch(() => setLoading(false))
   }
 
   const unreadCount = contacts.filter(c => !c.read).length
@@ -35,14 +37,16 @@ export default function AdminMessages() {
     })
 
   const handleMarkRead = async (id) => {
-    await fetch(`${API}/api/contact/${id}`, { method: 'PATCH' })
+    const res = await fetch(`${API}/api/contact/${id}`, { method: 'PATCH', headers: adminHeaders() })
+    if (handleUnauthorized(res)) return
     fetchContacts()
     if (selectedMsg?._id === id) setSelectedMsg(prev => ({ ...prev, read: true }))
   }
 
   const handleDelete = async () => {
     if (!confirmDelete) return
-    await fetch(`${API}/api/contact/${confirmDelete}`, { method: 'DELETE' })
+    const res = await fetch(`${API}/api/contact/${confirmDelete}`, { method: 'DELETE', headers: adminHeaders() })
+    if (handleUnauthorized(res)) return
     setConfirmDelete(null)
     if (selectedMsg?._id === confirmDelete) setSelectedMsg(null)
     setToast({ message: 'Message deleted', type: 'success' })

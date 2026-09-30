@@ -2,7 +2,6 @@ import { useState, createContext, useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
-import ChatAlarmPoller from './ChatAlarmPoller'
 
 const AdminContext = createContext()
 export const useAdmin = () => useContext(AdminContext)
@@ -23,7 +22,6 @@ export default function AdminLayout({ children }) {
           </main>
         </div>
       </div>
-      <ChatAlarmPoller />
     </AdminContext.Provider>
   )
 }

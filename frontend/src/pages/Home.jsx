@@ -14,6 +14,8 @@ import SectionAuditCTA from '../components/SectionAuditCTA'
 import SectionEHRLogos from '../components/SectionEHRLogos'
 import SectionSolutionsTabs from '../components/SectionSolutionsTabs'
 import SectionHealthcareSectors from '../components/SectionHealthcareSectors'
+import { usePageSeo } from '../hooks/useSeo'
+import { organizationSchema, breadcrumbSchema } from '../utils/seo'
 
 /* ── Trust Strip ── */
 function TrustStrip() {
@@ -819,6 +821,7 @@ function FAQSection() {
 
 /* ── HOME PAGE ── */
 export default function Home() {
+  usePageSeo('/', { jsonLd: [organizationSchema(), breadcrumbSchema([{ name: 'Home', path: '/' }])] })
   return (
     <>
       <HeroSection />

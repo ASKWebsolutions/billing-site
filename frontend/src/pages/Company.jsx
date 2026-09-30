@@ -2,6 +2,7 @@ import { Target, Shield, Users, Heart, CheckCircle, ArrowRight, Award, Building2
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
 import { Link } from 'react-router-dom'
+import { usePageSeo } from '../hooks/useSeo'
 
 const values = [
   { icon: Heart, title: 'Patient-Centered', desc: 'Every MBX Solutions workflow starts with better patient outcomes in mind.' },
@@ -19,6 +20,7 @@ const companyLinks = [
 ]
 
 export default function Company() {
+  usePageSeo('/company')
   return (
     <>
       {/* Hero */}

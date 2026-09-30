@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton, SecondaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const advantages = [
   {
@@ -150,6 +151,7 @@ function MetricCounter({ value, decimals = 0 }) {
 }
 
 export default function MBXAdvantage() {
+  usePageSeo('/mbx-advantage')
   return (
     <>
       {/* Hero */}

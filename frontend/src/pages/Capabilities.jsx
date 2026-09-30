@@ -4,6 +4,7 @@ import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Ani
 import SectionStatsGrid from '../components/SectionStatsGrid'
 import SectionAuditCTA from '../components/SectionAuditCTA'
 import { CheckCircle, Zap } from 'lucide-react'
+import { usePageSeo } from '../hooks/useSeo'
 
 const capabilities = [
   {
@@ -73,6 +74,7 @@ const included = [
 ]
 
 export default function Capabilities() {
+  usePageSeo('/capabilities')
   return (
     <>
       {/* Hero */}

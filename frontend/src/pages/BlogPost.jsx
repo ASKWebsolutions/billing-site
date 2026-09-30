@@ -3,6 +3,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, CalendarDays, Clock, Tag, Check, Newspaper, Home, ChevronRight } from 'lucide-react'
 import { PrimaryButton } from '../components/UI'
+import useSeo from '../hooks/useSeo'
+import { articleSchema, breadcrumbSchema } from '../utils/seo'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
@@ -25,17 +27,33 @@ const LinkIconSvg = (props) => (
   </svg>
 )
 
-/* Inline formatting: **bold** support */
+/* Inline formatting: **bold**, *italic* and [text](url) support.
+    Internal links get crawlable anchors so blog posts can pass authority
+    to service pages; external links open in a new tab. */
 function renderInline(text) {
   return String(text)
-    .split(/(\*\*[^*]+\*\*)/g)
-    .map((part, i) =>
-      part.startsWith('**') && part.endsWith('**') ? (
-        <strong key={i} className="font-bold text-mbx-navy">{part.slice(2, -2)}</strong>
-      ) : (
-        part
-      )
-    )
+    .split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g)
+    .map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-bold text-mbx-navy">{part.slice(2, -2)}</strong>
+      }
+      const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+      if (link) {
+        const [, label, href] = link
+        const external = /^https?:\/\//i.test(href)
+        return (
+          <a
+            key={i}
+            href={href}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            className="font-semibold text-mbx-teal underline decoration-mbx-teal/40 underline-offset-4 transition-colors hover:text-mbx-navy hover:decoration-mbx-navy"
+          >
+            {label}
+          </a>
+        )
+      }
+      return part
+    })
 }
 
 /* Structured content renderer: headings, quotes, lists, paragraphs */
@@ -136,6 +154,33 @@ export default function BlogPost() {
         .catch(() => {})
     }
   }, [post])
+
+  useSeo({
+    title: post ? post.title : 'Article Not Found',
+    description: post ? post.excerpt : 'This article is unavailable or has been unpublished.',
+    path: `/blog/${slug}`,
+    image: post?.coverImage || undefined,
+    type: 'article',
+    noindex: !loading && !post,
+    jsonLd: post
+      ? [
+          articleSchema({
+            title: post.title,
+            description: post.excerpt,
+            image: post.coverImage,
+            datePublished: post.createdAt,
+            dateModified: post.updatedAt,
+            author: post.author,
+            keywords: post.tags,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Blog', path: '/blog' },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+        ]
+      : null,
+  })
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href).catch(() => {})

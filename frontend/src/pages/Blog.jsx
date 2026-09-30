@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, CalendarDays, ArrowRight, ArrowUpRight, BookOpen, Clock, Newspaper } from 'lucide-react'
 import { PrimaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
+import { breadcrumbSchema } from '../utils/seo'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
@@ -146,6 +148,12 @@ function FeaturedCard({ post }) {
 }
 
 export default function Blog() {
+  usePageSeo('/blog', {
+    jsonLd: breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Blog', path: '/blog' },
+    ]),
+  })
   const [posts, setPosts] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)

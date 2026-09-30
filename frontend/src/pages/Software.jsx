@@ -1,6 +1,7 @@
 import { MonitorSmartphone, BarChart3, Code2, ShieldCheck, Zap, Globe2, CheckCircle } from 'lucide-react'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const features = [
   { icon: Zap, title: 'Fast Claim Submission', desc: 'MBX Solutions submits clean, scrubbed claims electronically the same day — reducing rejections and speeding up payments.' },
@@ -10,6 +11,7 @@ const features = [
 ]
 
 export default function Software() {
+  usePageSeo('/software')
   return (
     <>
       {/* Hero */}

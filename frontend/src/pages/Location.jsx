@@ -8,6 +8,8 @@ import {
 import { AnimatedSection, StaggerChildren, StaggerItem, CountUp } from '../components/Animated'
 import { SectionHeading, PrimaryButton, SecondaryButton } from '../components/UI'
 import { FEATURED_LOCATIONS, findLocation } from '../data/locations'
+import useSeo from '../hooks/useSeo'
+import { localBusinessSchema, breadcrumbSchema, SITE_NAME } from '../utils/seo'
 
 const whyStats = [
   { target: 130, suffix: '+', label: 'Dedicated Assistant Managers', sub: 'Available for direct communication at any time, without the hassle of long hold times.', icon: Headset },
@@ -194,12 +196,34 @@ function FAQSection() {
 export default function Location() {
   const { slug } = useParams()
   const location = findLocation(slug)
+  const state = location?.name
+
+  useSeo({
+    title: state ? `Medical Billing Services in ${state}` : 'Location Not Found',
+    description: state
+      ? `MBX Solutions provides medical billing, coding, credentialing and A/R recovery for healthcare providers in ${state}. Serving all 50 states with a dedicated home health and hospice RCM team.`
+      : 'This location page is unavailable.',
+    path: `/locations/${slug}`,
+    noindex: !state,
+    jsonLd: state
+      ? [
+          localBusinessSchema({
+            name: `${SITE_NAME} — ${state}`,
+            description: `Outsourced revenue cycle management for home health, hospice and physician practices in ${state}, including medical billing, certified coding, credentialing and old A/R recovery.`,
+            areaServed: state,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Locations', path: '/locations' },
+            { name: state, path: `/locations/${slug}` },
+          ]),
+        ]
+      : null,
+  })
 
   if (!location) {
     return <Navigate to="/locations" replace />
   }
-
-  const state = location.name
 
   return (
     <>

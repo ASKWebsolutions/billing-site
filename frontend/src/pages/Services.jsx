@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, CheckCircle, ChevronDown, ClipboardCheck, FileText, Activity, Shield, TrendingUp, Users, Zap, Target, BarChart3, Eye, Home, HeartPulse } from 'lucide-react'
 import { AnimatedSection } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
 
 const services = [
   {
@@ -130,6 +131,7 @@ const specialties = [
 ]
 
 export default function Services() {
+  usePageSeo('/services')
   const [expandedService, setExpandedService] = useState(null)
   const [activeSpecialty, setActiveSpecialty] = useState(0)
 

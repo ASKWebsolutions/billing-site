@@ -51,6 +51,7 @@ import {
   StaggerItem,
 } from '../components/Animated'
 import ContactForm from '../components/ContactForm'
+import { usePageSeo } from '../hooks/useSeo'
 
 const scrollToId = (id) => {
   const el = document.getElementById(id)
@@ -1850,6 +1851,7 @@ export function FinalCta() {
 /* ------------------------------------------------------------------ */
 
 export default function HomeHealthHospice() {
+  usePageSeo('/home-health-hospice')
   return (
     <main className="bg-[#0B1428]">
       <Hero />

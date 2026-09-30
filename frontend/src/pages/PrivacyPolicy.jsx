@@ -1,6 +1,7 @@
 import { ShieldCheck, Mail, Phone, MapPin, LockKeyhole } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { AnimatedSection } from '../components/Animated'
+import { usePageSeo } from '../hooks/useSeo'
 
 const SECTIONS = [
   {
@@ -117,6 +118,7 @@ const SECTIONS = [
 ]
 
 export default function PrivacyPolicy() {
+  usePageSeo('/privacy-policy')
   return (
     <>
       {/* Hero */}

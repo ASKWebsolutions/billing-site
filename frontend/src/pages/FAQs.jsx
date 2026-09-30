@@ -15,6 +15,8 @@ import {
 import { Link } from 'react-router-dom'
 import { AnimatedSection } from '../components/Animated'
 import { PrimaryButton } from '../components/UI'
+import { usePageSeo } from '../hooks/useSeo'
+import { faqSchema, breadcrumbSchema } from '../utils/seo'
 
 const CATEGORIES = [
   {
@@ -165,6 +167,16 @@ function Accordion({ items }) {
 }
 
 export default function FAQs() {
+  const allFaqs = CATEGORIES.flatMap(c => c.questions)
+  usePageSeo('/faqs', {
+    jsonLd: [
+      faqSchema(allFaqs),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'FAQs', path: '/faqs' },
+      ]),
+    ],
+  })
   return (
     <>
       {/* Hero */}

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { unlockAudio } from '../utils/liveChat'
 
 const AuthContext = createContext()
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
@@ -26,6 +27,9 @@ export function AuthProvider({ children }) {
   }, [])
 
   const login = async (email, password) => {
+    // The submit click is a real user gesture — the one reliable moment to
+    // latch the alert AudioContext open.
+    unlockAudio()
     const res = await fetch(`${API}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

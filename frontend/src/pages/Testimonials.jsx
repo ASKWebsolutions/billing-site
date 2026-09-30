@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { AnimatedSection } from '../components/Animated'
 import { Star, Quote } from 'lucide-react'
+import { usePageSeo } from '../hooks/useSeo'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export default function Testimonials() {
+  usePageSeo('/testimonials')
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
 
