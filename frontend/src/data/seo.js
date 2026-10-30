@@ -36,6 +36,14 @@ export const SEO = {
       'medical billing services, RCM solutions, outsourced billing, clean claim submission, medical billing company',
     image: '/og-rcm-services.png',
   },
+  '/ar-recovery': {
+    title: 'Medical A/R Recovery & Old Aging Claims',
+    description:
+      'Recover stuck healthcare A/R and aging claims with MBX Solutions. Our specialized recovery unit works on a 12% contingency basis with no upfront fees.',
+    keywords:
+      'medical A/R recovery, old aging claims, accounts receivable recovery, denial overturn, timely filing appeals, healthcare contingency billing',
+    image: '/og-rcm-services.png',
+  },
   '/software': {
     title: 'RCM Software & Practice Management Tools',
     description:

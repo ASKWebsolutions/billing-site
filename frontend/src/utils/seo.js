@@ -10,7 +10,7 @@ export const CONTACT = {
   phone: '+18883706494',
   phoneFormatted: '+1 (888) 370-6494',
   email: 'info@mbxsol.com',
-  logo: '/mbx-logo.png',
+  logo: '/reallogo.jpeg',
   linkedin: 'https://www.linkedin.com/company/mbxsol/',
   facebook: 'https://www.facebook.com/Mbxsol',
 }

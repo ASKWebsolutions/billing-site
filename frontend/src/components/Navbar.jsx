@@ -1,10 +1,184 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, ArrowRight, MapPin } from 'lucide-react'
+import {
+  Menu,
+  X,
+  ChevronDown,
+  ArrowRight,
+  MapPin,
+  HeartPulse,
+  HeartHandshake,
+  Building2,
+  Hospital,
+  ShieldAlert,
+  Wallet,
+  FileCode2,
+  ReceiptText,
+  ClipboardCheck,
+  Activity,
+  FileText,
+  Send,
+  RefreshCw,
+  BadgeCheck,
+} from 'lucide-react'
 import TopUtilityHeader from './TopUtilityHeader'
 import ChatWidget from './ChatWidget'
 import { FEATURED_LOCATIONS } from '../data/locations'
+
+const SERVICE_GROUPS = {
+  settings: [
+    { label: 'Home Health Billing', path: '/services#home-health', icon: HeartPulse },
+    { label: 'Hospice Billing', path: '/home-health-hospice', icon: HeartHandshake },
+  ],
+  practices: [
+    { label: 'Small Practice', path: '/projects/small', icon: Building2 },
+    { label: 'Large Practice', path: '/projects/large', icon: Hospital },
+  ],
+  core: [
+    { label: 'Denial Management', path: '/services#denial-management', icon: ShieldAlert },
+    { label: 'A-R Recovery', path: '/ar-recovery', icon: Wallet },
+    { label: 'Medical Coding', path: '/services#medical-coding', icon: FileCode2 },
+    { label: 'Medical Billing', path: '/medical-billing', icon: ReceiptText },
+    { label: 'OASIS & QA', path: '/solution#oasis', icon: ClipboardCheck },
+    { label: 'RCM', path: '/rcm-services', icon: Activity },
+  ],
+  operations: [
+    { label: 'Claim Entry', path: '/services#claim-entry', icon: FileText },
+    { label: 'Claims Scrubbing & Submission', path: '/services#claims-scrubbing', icon: Send },
+    { label: 'AR Follow-up', path: '/services#ar-followup', icon: RefreshCw },
+    { label: 'Credentialing & Enrollment', path: '/services#credentialing', icon: BadgeCheck },
+  ],
+}
+
+function MenuHeading({ children }) {
+  return (
+    <p className="mb-2 flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-mbx-teal">
+      <span className="inline-block h-3 w-1 rounded-full bg-mbx-teal" />
+      {children}
+    </p>
+  )
+}
+
+function ServicesMegaMenu() {
+  return (
+    <div className="w-[56rem] max-w-[calc(100vw-2.5rem)] overflow-hidden rounded-2xl border border-mbx-teal/15 bg-white/95 shadow-2xl shadow-[#0B2348]/15 backdrop-blur-md">
+      <div className="flex items-center justify-between gap-6 border-b border-mbx-border/70 bg-gradient-to-r from-mbx-surface via-white to-white px-6 py-3.5">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-mbx-teal">
+            <span className="inline-block h-3.5 w-1 rounded-full bg-mbx-teal" />
+            Services
+          </p>
+          <p className="mt-1 truncate text-[13px] font-semibold text-mbx-navy">
+            Revenue cycle support built for home health &amp; hospice
+          </p>
+        </div>
+        <Link
+          to="/services"
+          className="group/all inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-bold text-mbx-navy transition-colors hover:bg-mbx-teal/5 hover:text-mbx-teal"
+        >
+          View all services
+          <ArrowRight size={13} className="text-mbx-teal transition-transform duration-200 group-hover/all:translate-x-1" />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-[11.5rem_minmax(0,1fr)_13rem] gap-5 px-6 py-5">
+        <div className="space-y-5">
+          <div>
+            <MenuHeading>Billing by Setting</MenuHeading>
+            <ul className="space-y-0.5">
+              {SERVICE_GROUPS.settings.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className="group/link flex items-center gap-2 rounded-lg px-2 py-1.5 text-[12.5px] font-semibold text-mbx-text-muted transition-all duration-200 hover:bg-mbx-teal/5 hover:text-mbx-navy"
+                  >
+                    <item.icon size={14} className="shrink-0 text-mbx-teal/70 transition-colors group-hover/link:text-mbx-teal" />
+                    <span className="leading-tight">{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="border-t border-mbx-border/60 pt-4">
+            <MenuHeading>Practice Size</MenuHeading>
+            <ul className="space-y-0.5">
+              {SERVICE_GROUPS.practices.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className="group/link flex items-center gap-2 rounded-lg px-2 py-1.5 text-[12.5px] font-semibold text-mbx-text-muted transition-all duration-200 hover:bg-mbx-teal/5 hover:text-mbx-navy"
+                  >
+                    <item.icon size={14} className="shrink-0 text-mbx-teal/70 transition-colors group-hover/link:text-mbx-teal" />
+                    <span className="leading-tight">{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-x border-mbx-border/60 px-5">
+          <MenuHeading>Core Services</MenuHeading>
+          <div className="grid grid-cols-2 gap-1">
+            {SERVICE_GROUPS.core.map((item) => (
+              <Link
+                key={item.path + item.label}
+                to={item.path}
+                className="group/tile flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-2 transition-all duration-200 hover:border-mbx-teal/25 hover:bg-white hover:shadow-sm hover:shadow-mbx-navy/5"
+              >
+                <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-mbx-teal/10 text-mbx-teal transition-colors duration-200 group-hover/tile:bg-mbx-teal group-hover/tile:text-mbx-white">
+                  <item.icon size={14} />
+                </span>
+                <span className="text-[12.5px] font-semibold leading-tight text-mbx-text-muted transition-colors group-hover/tile:text-mbx-navy">
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <MenuHeading>Billing Operations</MenuHeading>
+          <ul className="space-y-0.5">
+            {SERVICE_GROUPS.operations.map((item) => (
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  className="group/link flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[12.5px] font-medium leading-tight text-mbx-text-muted transition-all duration-200 hover:bg-mbx-teal/5 hover:text-mbx-navy"
+                >
+                  {item.label}
+                  <ArrowRight size={12} className="ml-auto shrink-0 -translate-x-1 text-mbx-teal opacity-0 transition-all duration-200 group-hover/link:translate-x-0 group-hover/link:opacity-100" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Link
+            to="/free-billing-audit"
+            className="group/audit mt-3 flex items-center justify-between gap-2 rounded-xl border border-mbx-teal/20 bg-mbx-teal/5 px-3 py-2.5 text-[12px] font-bold text-mbx-navy transition-colors hover:border-mbx-teal/40 hover:bg-mbx-teal/10"
+          >
+            Free Billing Audit
+            <ArrowRight size={13} className="text-mbx-teal transition-transform duration-200 group-hover/audit:translate-x-1" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="mx-6 mb-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-xl bg-mbx-navy px-5 py-3.5">
+        <div className="min-w-0">
+          <p className="text-[13px] font-extrabold text-mbx-white">Not sure which service fits your practice?</p>
+          <p className="mt-0.5 text-[11px] text-white/60">Free 90-day A/R audit · 12% contingency A/R recovery · no long-term contracts.</p>
+        </div>
+        <Link
+          to="/connect-us"
+          className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#4486BF] px-4 py-2 text-[11px] font-bold text-mbx-white transition-all duration-300 hover:bg-[#3a73a8]"
+        >
+          Talk to an expert
+          <ArrowRight size={13} />
+        </Link>
+      </div>
+    </div>
+  )
+}
 
 const navItems = [
   { label: 'Home', path: '/' },
@@ -42,26 +216,12 @@ const navItems = [
   {
     label: 'Services',
     path: '/services',
+    isServices: true,
     children: [
-      { heading: 'Primary', items: [
-        { label: 'Home Health Billing', path: '/services#home-health' },
-        { label: 'Hospice Billing', path: '/services#hospice' },
-      ]},
-      { heading: 'Practices', items: [
-        { label: 'Small Practice', path: '/projects/small' },
-        { label: 'Large Practice', path: '/projects/large' },
-      ]},
-      { heading: 'Core Services', items: [
-        { label: 'Claim Entry', path: '/services#claim-entry' },
-        { label: 'Claims Scrubbing & Submission', path: '/services#claims-scrubbing' },
-        { label: 'Medical Coding', path: '/services#medical-coding' },
-        { label: 'AR Follow-up', path: '/services#ar-followup' },
-      ]},
-      { heading: 'Specialized', items: [
-        { label: 'Denial Management', path: '/services#denial-management' },
-        { label: 'Credentialing & Enrollment', path: '/services#credentialing' },
-        { label: 'Free Audit', path: '/services#free-audit' },
-      ]},
+      { heading: 'Billing by Setting', items: SERVICE_GROUPS.settings },
+      { heading: 'Practice Size', items: SERVICE_GROUPS.practices },
+      { heading: 'Core Services', items: SERVICE_GROUPS.core },
+      { heading: 'Billing Operations', items: SERVICE_GROUPS.operations },
     ],
   },
   {
@@ -101,6 +261,7 @@ const navItems = [
         { label: 'Medical Coding', path: '/rcm-services#coding' },
         { label: 'AR Follow-up', path: '/rcm-services#ar' },
         { label: 'Denial Management', path: '/rcm-services#denial' },
+        { label: 'A-R Recovery', path: '/ar-recovery' },
       ]},
     ],
   },
@@ -116,7 +277,7 @@ const navItems = [
       ]},
     ],
   },
-  { label: 'Free Billing Audit', path: '/free-billing-audit' },
+  { label: 'Pricing', path: '/pricing' },
 ]
 
 export default function Navbar() {
@@ -173,7 +334,7 @@ export default function Navbar() {
         >
         <nav className="container mx-auto grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 py-2 md:gap-4 lg:py-2.5 xl:gap-6">
           <Link to="/" className="relative z-10 shrink-0">
-            <img src="/mbx-logo.png" alt="MBX Solutions" className="h-8 md:h-10 lg:h-12 w-auto" />
+            <img src="/reallogo.jpeg" alt="MBX Solutions" className="h-8 md:h-10 lg:h-12 w-auto" />
           </Link>
 
           <div className="hidden min-w-0 items-center justify-center xl:flex">
@@ -197,8 +358,10 @@ export default function Navbar() {
                 </div>
 
                 {item.children && (
-                  <div className={`pointer-events-none invisible absolute z-50 top-full pt-3 opacity-0 scale-y-95 origin-top transition-all duration-250 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:scale-y-100 ${idx >= navItems.length - 2 ? 'right-0' : 'left-0'}`}>
-                    {item.isLocations ? (
+                  <div className={`pointer-events-none invisible absolute z-50 top-full pt-3 opacity-0 scale-y-95 origin-top transition-all duration-250 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:scale-y-100 ${idx >= navItems.length - 2 ? 'right-0' : item.children.length > 2 ? 'left-1/2 -translate-x-1/2' : 'left-0'}`}>
+                    {item.isServices ? (
+                      <ServicesMegaMenu />
+                    ) : item.isLocations ? (
                       <div className="w-[44rem] max-w-[calc(100vw-2.5rem)] rounded-2xl bg-white/95 backdrop-blur-md border border-mbx-teal/15 shadow-2xl shadow-[#0B2348]/15 p-5 max-h-[80vh] overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-mbx-teal/30">
                         <div className="mb-3 flex items-center justify-between">
                           <p className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-mbx-teal">
@@ -252,16 +415,25 @@ export default function Navbar() {
                         </div>
                       </div>
                     ) : (
-                      <div className={`${item.children.length > 1 ? 'min-w-[22rem]' : 'min-w-[16rem]'} w-max max-w-[calc(100vw-2.5rem)] rounded-2xl bg-white/95 backdrop-blur-md border border-mbx-teal/15 shadow-2xl shadow-[#0B2348]/15 p-5 max-h-[70vh] overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-mbx-teal/30`}>
-                        {item.children.map((child, idx) => (
-                          <div key={idx} className={idx > 0 ? 'mt-4 border-t border-mbx-teal/10 pt-4' : ''}>
+                      <div className={`${item.children.length > 1 ? 'min-w-[22rem]' : 'min-w-[16rem]'} w-max max-w-[calc(100vw-2.5rem)] relative rounded-2xl bg-white/95 backdrop-blur-md border border-mbx-teal/15 shadow-2xl shadow-[#0B2348]/15 p-5 max-h-[70vh] overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-mbx-teal/30`}>
+                        {item.children.length > 2 && (
+                          <div aria-hidden="true" className="absolute inset-x-6 top-0 h-0.5 rounded-full bg-gradient-to-r from-[#4486BF] via-[#5A9AD0] to-transparent" />
+                        )}
+                        <div className={item.children.length > 2 ? 'flex items-stretch' : ''}>
+                        {item.children.map((child, idx) => {
+                          const wide = item.children.length > 2
+                          const wrapCls = wide
+                            ? `${idx > 0 ? 'border-l border-mbx-teal/10 pl-5' : ''} ${idx < item.children.length - 1 ? 'pr-5' : ''}`
+                            : idx > 0 ? 'mt-4 border-t border-mbx-teal/10 pt-4' : ''
+                          return (
+                          <div key={idx} className={wrapCls}>
                             {child.heading && (
                               <p className="mb-1.5 flex items-center gap-2 px-3 text-[10px] font-extrabold uppercase tracking-[0.2em] text-mbx-teal">
                                 <span className="inline-block h-3.5 w-1 rounded-full bg-mbx-teal" />
                                 {child.heading}
                               </p>
                             )}
-                            <ul className="space-y-0.5">
+                            <ul className={item.children.length > 2 ? 'space-y-1' : 'space-y-0.5'}>
                               {(child.items || [child]).map((sub, subIdx) => (
                                 <li key={subIdx}>
                                   <Link
@@ -275,7 +447,24 @@ export default function Navbar() {
                               ))}
                             </ul>
                           </div>
-                        ))}
+                          )
+                        })}
+                        </div>
+                        {item.children.length > 2 && (
+                          <div className="mt-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-xl bg-mbx-navy px-5 py-4">
+                            <div className="min-w-0">
+                              <p className="text-sm font-extrabold text-mbx-white">Not sure which service fits your practice?</p>
+                              <p className="mt-0.5 text-xs text-white/60">Free 90-day A/R audit · 12% contingency A/R recovery · no long-term contracts.</p>
+                            </div>
+                            <Link
+                              to="/connect-us"
+                              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#4486BF] px-4 py-2.5 text-xs font-bold text-mbx-white transition-all duration-300 hover:bg-[#3a73a8]"
+                            >
+                              Talk to an expert
+                              <ArrowRight size={14} />
+                            </Link>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

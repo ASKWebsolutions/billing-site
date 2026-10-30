@@ -5,7 +5,7 @@ import {
   startChatSession, sendVisitorMessage, fetchVisitorMessages, markVisitorRead,
 } from '../utils/liveChat'
 
-const WHATSAPP_URL = 'https://wa.me/18883706494'
+const WHATSAPP_URL = 'https://wa.me/15597777919'
 
 const WHATSAPP_ICON = (
   <svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true">

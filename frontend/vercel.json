@@ -11,7 +11,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets/|api/|robots\\.txt|sitemap\\.xml|favicon|logo|mbx-logo|icons\\.svg|WhatsApp).*)",
+      "source": "/((?!assets/|api/|robots\\.txt|sitemap\\.xml|favicon|logo|mbx-logo|reallogo|icons\\.svg|WhatsApp).*)",
       "destination": "/index.html"
     }
   ],

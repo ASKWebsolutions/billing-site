@@ -13,6 +13,7 @@ import SectionSpecialtiesScroll from '../components/SectionSpecialtiesScroll'
 import SectionAuditCTA from '../components/SectionAuditCTA'
 import SectionEHRLogos from '../components/SectionEHRLogos'
 import SectionSolutionsTabs from '../components/SectionSolutionsTabs'
+import CertificationsShowcase from '../components/CertificationsShowcase'
 import SectionHealthcareSectors from '../components/SectionHealthcareSectors'
 import { usePageSeo } from '../hooks/useSeo'
 import { organizationSchema, breadcrumbSchema } from '../utils/seo'
@@ -828,6 +829,7 @@ export default function Home() {
       <TrustStrip />
       <SectionStatsGrid />
       <IntroductionSection />
+      <CertificationsShowcase />
       <SectionRCMTimeline />
       <MBXAdvantageSection />
       <SectionSolutionsTabs />

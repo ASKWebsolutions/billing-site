@@ -135,12 +135,12 @@ function SectionHead({ eyebrow, icon: Icon, title, subtitle, dark = true, center
           className={`mb-6 inline-flex items-center gap-2.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] ${
             dark
               ? 'border-[#00D9C7]/30 bg-[#00D9C7]/5 text-[#00D9C7]'
-              : 'border-[#0E9B8F]/25 bg-[#0E9B8F]/5 text-[#0E7C72]'
+              : 'border-mbx-teal/25 bg-mbx-teal/5 text-mbx-teal'
           }`}
         >
           <span
             className={`flex size-5 items-center justify-center rounded-full text-white ${
-              dark ? 'bg-[#00D9C7]' : 'bg-[#0E9B8F]'
+              dark ? 'bg-[#00D9C7]' : 'bg-mbx-teal'
             }`}
           >
             <Icon size={11} strokeWidth={3} />
@@ -150,13 +150,13 @@ function SectionHead({ eyebrow, icon: Icon, title, subtitle, dark = true, center
       )}
       <h2
         className={`mb-5 text-3xl font-extrabold tracking-[-0.02em] leading-[1.08] md:text-4xl lg:text-[2.75rem] ${
-          dark ? 'text-[#F7F8FA]' : 'text-[#0B1428]'
+          dark ? 'text-[#F7F8FA]' : 'text-mbx-navy'
         }`}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className={`text-base leading-relaxed md:text-lg ${dark ? 'text-[#B8C5D8]' : 'text-[#0B1428]/60'}`}>
+        <p className={`text-base leading-relaxed md:text-lg ${dark ? 'text-[#B8C5D8]' : 'text-mbx-text-muted'}`}>
           {subtitle}
         </p>
       )}
@@ -169,7 +169,7 @@ function TealButton({ children, onClick, size = 'lg', className = '' }) {
     <button
       type="button"
       onClick={onClick}
-      className={`group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#00D9C7] font-bold text-[#0B1428] transition-all duration-300 hover:shadow-xl hover:shadow-[#00D9C7]/25 hover:-translate-y-0.5 ${
+      className={`group inline-flex items-center justify-center gap-2.5 rounded-full bg-mbx-teal font-bold text-mbx-white transition-all duration-300 hover:shadow-xl hover:shadow-mbx-teal/25 hover:bg-[#3a73a8] hover:-translate-y-0.5 ${
         size === 'lg' ? 'px-7 py-3.5 text-sm md:px-8 md:text-[15px]' : 'px-5 py-2.5 text-sm'
       } ${className}`}
     >
@@ -184,7 +184,7 @@ function OutlineButton({ children, onClick, className = '' }) {
     <button
       type="button"
       onClick={onClick}
-      className={`group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#00D9C7]/40 px-7 py-3.5 text-sm font-bold text-[#F7F8FA] transition-all duration-300 hover:border-[#00D9C7] hover:text-[#0B1428] md:px-8 md:text-[15px] ${className}`}
+      className={`group inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-mbx-navy/25 px-7 py-3.5 text-sm font-bold text-mbx-navy transition-all duration-300 hover:border-mbx-teal hover:text-mbx-teal md:px-8 md:text-[15px] ${className}`}
     >
       {children}
       <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -214,17 +214,17 @@ const LEDGER_IMAGES = [
 const LEDGER_STYLES = [
   {
     icon: FileText,
-    iconWrap: 'bg-[#0B1428]/5 text-[#0B1428]',
+    iconWrap: 'bg-mbx-navy/5 text-mbx-navy',
     barBg: 'bg-white',
-    barBorder: 'border-[#0B1428]/[0.06]',
-    valueClass: 'text-[#0B1428]',
+    barBorder: 'border-mbx-border',
+    valueClass: 'text-mbx-navy',
   },
   {
     icon: Banknote,
-    iconWrap: 'bg-[#00D9C7]/15 text-[#0E9B8F]',
-    barBg: 'bg-[#E9F9F6]',
-    barBorder: 'border-[#00D9C7]/25',
-    valueClass: 'text-[#0E9B8F]',
+    iconWrap: 'bg-mbx-teal/10 text-mbx-teal',
+    barBg: 'bg-mbx-surface',
+    barBorder: 'border-mbx-teal/25',
+    valueClass: 'text-mbx-teal',
   },
   {
     icon: TrendingUp,
@@ -260,12 +260,12 @@ function Ledger() {
 
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-[#00D9C7]/10 blur-3xl" aria-hidden="true" />
-      <div className="relative rounded-3xl border border-[#E8E4DA] bg-[#FBF9F3] p-4 shadow-2xl shadow-black/40 md:p-5">
+      <div className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-mbx-teal/10 blur-3xl" aria-hidden="true" />
+      <div className="relative rounded-3xl border border-mbx-border bg-white p-4 shadow-2xl shadow-mbx-navy/10 md:p-5">
         <div className="flex flex-wrap items-center justify-between gap-2.5">
           <div>
-            <h3 className="text-[14px] font-extrabold text-[#0B1428]">Live Collections Ledger</h3>
-            <p className="text-[10px] font-semibold text-[#0B1428]/50">Billing One Iota · Real-time</p>
+            <h3 className="text-[14px] font-extrabold text-mbx-navy">Live Collections Ledger</h3>
+            <p className="text-[10px] font-semibold text-mbx-navy/50">Billing One Iota · Real-time</p>
           </div>
           <div className="flex items-center gap-0.5 rounded-lg bg-[#ECEDEF] p-0.5">
             {[
@@ -279,8 +279,8 @@ function Ledger() {
                 aria-pressed={range === t.k}
                 className={`rounded-md px-3 py-1.5 text-[10px] font-bold transition-all duration-200 ${
                   range === t.k
-                    ? 'bg-white text-[#0B1428] shadow-md shadow-black/10'
-                    : 'bg-transparent text-[#0B1428]/55 hover:bg-white/60 hover:text-[#0B1428]'
+                    ? 'bg-white text-mbx-navy shadow-md shadow-black/10'
+                    : 'bg-transparent text-mbx-navy/55 hover:bg-white/60 hover:text-mbx-navy'
                 }`}
               >
                 {t.label}
@@ -297,7 +297,7 @@ function Ledger() {
                 <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${s.iconWrap}`}>
                   <s.icon size={16} />
                 </span>
-                <p className="min-w-0 flex-1 truncate text-[10px] font-semibold text-[#0B1428]/55">{r.label}</p>
+                <p className="min-w-0 flex-1 truncate text-[10px] font-semibold text-mbx-navy/55">{r.label}</p>
                 <p className={`shrink-0 text-base font-extrabold tracking-tight md:text-lg ${s.valueClass}`}>
                   {r.prefix ? (
                     <AnimatedNumber value={r.number} prefix={r.prefix} duration={1800} />
@@ -310,7 +310,7 @@ function Ledger() {
           })}
         </div>
 
-        <div className="relative mt-4 overflow-hidden rounded-2xl border border-[#0B1428]/[0.06]">
+        <div className="relative mt-4 overflow-hidden rounded-2xl border border-mbx-border">
           <div className="relative aspect-[16/9] bg-[#ECEDEF]">
             <AnimatePresence mode="wait">
               <motion.img
@@ -368,20 +368,20 @@ function Hero() {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-[#0B1428] pb-16 lg:pb-20">
+    <section className="relative overflow-hidden bg-atmos pb-16 lg:pb-20">
       <div
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)',
+            'linear-gradient(rgba(68,134,191,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(68,134,191,0.05) 1px, transparent 1px)',
           backgroundSize: '54px 54px',
           maskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 72%)',
           WebkitMaskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 72%)',
         }}
         aria-hidden="true"
       />
-      <div className="pointer-events-none absolute -top-32 right-[-10%] size-[540px] rounded-full bg-[#00D9C7]/10 blur-[150px]" aria-hidden="true" />
-      <div className="pointer-events-none absolute bottom-0 left-[-8%] size-[480px] rounded-full bg-[#1E5BFF]/10 blur-[140px]" aria-hidden="true" />
+      <div className="pointer-events-none absolute -top-32 right-[-10%] size-[540px] rounded-full bg-mbx-teal/15 blur-[150px]" aria-hidden="true" />
+      <div className="pointer-events-none absolute bottom-0 left-[-8%] size-[480px] rounded-full bg-[#C7E7F8]/70 blur-[140px]" aria-hidden="true" />
 
       <div className="relative container mx-auto grid items-center gap-10 px-5 pt-24 md:px-6 md:pt-28 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:pt-44 xl:px-8">
         <div className="min-w-0">
@@ -389,31 +389,31 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="mb-5 inline-flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1.5 rounded-full border border-[#00D9C7]/30 bg-[#00D9C7]/5 px-4 py-2 text-center text-[10px] font-bold tracking-wide text-[#00D9C7] sm:w-auto sm:rounded-full sm:px-3.5 sm:py-1.5 md:text-[11px]"
+            className="mb-5 inline-flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1.5 rounded-full border border-mbx-teal/30 bg-white/70 px-4 py-2 text-center text-[10px] font-bold tracking-wide text-mbx-teal sm:w-auto sm:rounded-full sm:px-3.5 sm:py-1.5 md:text-[11px]"
           >
-            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#00D9C7] text-[#0B1428]">
+            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-mbx-teal text-white">
               <HeartPulse size={11} strokeWidth={3} />
             </span>
             <span className="whitespace-nowrap">Physician Part B Specialists</span>
-            <span className="hidden text-white/30 sm:inline">·</span>
+            <span className="hidden text-mbx-text-muted/40 sm:inline">·</span>
             <span className="whitespace-nowrap">Home Health &amp; Hospice Division</span>
-            <span className="hidden text-white/30 sm:inline">·</span>
+            <span className="hidden text-mbx-text-muted/40 sm:inline">·</span>
             <span className="whitespace-nowrap">Zero Software Switching</span>
           </motion.div>
 
-          <h1 className="text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#F7F8FA] sm:text-[32px] lg:text-[38px] xl:text-[44px]">
+          <h1 className="text-[28px] font-extrabold leading-[1.08] tracking-[-0.03em] text-mbx-navy sm:text-[32px] lg:text-[38px] xl:text-[44px]">
             Physician{' '}
-            <span className="text-[#00D9C7]">Part B</span> &amp; Specialized{' '}
-            <span className="text-[#00D9C7]">Home Health</span> &amp;{' '}
-            <span className="text-[#00D9C7]">Hospice</span> Billing That <span className="text-[#00D9C7]">Actually Pays.</span>
+            <span className="text-mbx-teal">Part B</span> &amp; Specialized{' '}
+            <span className="text-mbx-teal">Home Health</span> &amp;{' '}
+            <span className="text-mbx-teal">Hospice</span> Billing That <span className="text-mbx-teal">Actually Pays.</span>
           </h1>
 
-          <p className="mt-4 max-w-[620px] text-sm leading-relaxed text-[#B8C5D8] md:text-[15px]">
+          <p className="mt-4 max-w-[620px] text-sm leading-relaxed text-mbx-text-muted md:text-[15px]">
             From front-desk patient intake to{' '}
-            <span className="font-bold text-[#00D9C7]">120+ day OLD AR</span> recovery. We eliminate front-end rejections,
-            submit <span className="font-bold text-[#00D9C7]">98%+</span> clean claims, overturn chronic payer denials, and
+            <span className="font-bold text-mbx-teal">120+ day OLD AR</span> recovery. We eliminate front-end rejections,
+            submit <span className="font-bold text-mbx-teal">98%+</span> clean claims, overturn chronic payer denials, and
             collect every dollar your clinic or agency earned. We cover all physician specialties and operate a dedicated
-            institutional division for <span className="font-bold text-[#00D9C7]">Home Health &amp; Hospice</span> Care.
+            institutional division for <span className="font-bold text-mbx-teal">Home Health &amp; Hospice</span> Care.
           </p>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -426,10 +426,10 @@ function Hero() {
           <div className="mt-7 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {trust.map((t) => (
               <div key={t.title} className="flex items-start gap-2.5">
-                <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-[#00D9C7]" strokeWidth={2.2} />
+                <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-mbx-teal" strokeWidth={2.2} />
                 <div>
-                  <p className="text-xs font-bold text-[#F7F8FA]">{t.title}</p>
-                  <p className="text-[11px] leading-relaxed text-[#B8C5D8]/80">{t.sub}</p>
+                  <p className="text-xs font-bold text-mbx-navy">{t.title}</p>
+                  <p className="text-[11px] leading-relaxed text-mbx-text-muted">{t.sub}</p>
                 </div>
               </div>
             ))}
@@ -443,19 +443,19 @@ function Hero() {
 
       {/* Proof strip */}
       <div className="relative container mx-auto px-5 md:px-6 xl:px-8">
-        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-mbx-border bg-mbx-border lg:grid-cols-4">
           {[
             { number: 98.8, suffix: '%', decimals: 1, label: 'First-Pass Clean Claim Acceptance Rate' },
             { number: 0, suffix: '', decimals: 0, label: 'Penalty Days', sub: 'Mandatory 5-Day NOA / NOE Submissions Guaranteed' },
             { number: 32, prefix: '+', suffix: '%', decimals: 0, label: 'Average Net Collection Uplift' },
             { number: 24, suffix: ' Hrs', decimals: 0, label: 'Encounter &amp; Charge Entry Turnaround', sub: 'Double-QC on every batch' },
           ].map((s, i) => (
-            <div key={i} className="bg-[#0D1629] p-5 text-center md:p-6">
-              <p className="text-xl font-extrabold tracking-tight text-[#00D9C7] md:text-[26px]">
+            <div key={i} className="bg-white p-5 text-center md:p-6">
+              <p className="text-xl font-extrabold tracking-tight text-mbx-teal md:text-[26px]">
                 <AnimatedNumber value={s.number} prefix={s.prefix || ''} suffix={s.suffix} decimals={s.decimals || 0} />
               </p>
-              <p className="mt-2 text-[11px] font-semibold leading-snug text-[#F7F8FA]">{s.label}</p>
-              {s.sub && <p className="mt-1 text-[10px] leading-snug text-[#B8C5D8]/70">{s.sub}</p>}
+              <p className="mt-2 text-[11px] font-semibold leading-snug text-mbx-navy">{s.label}</p>
+              {s.sub && <p className="mt-1 text-[10px] leading-snug text-mbx-text-muted">{s.sub}</p>}
             </div>
           ))}
         </div>
@@ -503,14 +503,15 @@ function Specialization() {
   ]
 
   return (
-    <section id="home-health-division" className="relative overflow-hidden bg-[#0D1629] py-20 lg:py-28">
+    <section id="home-health-division" className="relative overflow-hidden bg-mbx-white py-20 lg:py-28">
       <div className="container mx-auto px-5 md:px-6 xl:px-8">
         <SectionHead
+          dark={false}
           eyebrow="Our Premier Core Specialization"
           icon={HeartPulse}
           title={
             <>
-              Specialized <span className="text-[#00D9C7]">Home Health</span> &amp; <span className="text-[#00D9C7]">Hospice Billing</span> Division
+              Specialized <span className="text-mbx-teal">Home Health</span> &amp; <span className="text-mbx-teal">Hospice Billing</span> Division
             </>
           }
           subtitle="Home Health is not traditional Part B. PDGM 30-day payment periods, mandatory 5-calendar-day Notices of Admission (NOA), institutional Medicare Part A UB-04 claims, hospice aggregate caps, and fiscal intermediary rules live in a separate billing universe — so we built an entire division around them. Our specialists log directly into your Medicare fiscal intermediary's FISS/DDE system, file every required notice on time, and monitor your hospice cap position monthly, so nothing you bill ever becomes an avoidable recoupment."
@@ -519,16 +520,16 @@ function Specialization() {
         <StaggerChildren className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" stagger={0.1}>
           {stats.map((s, i) => (
             <StaggerItem key={i} className="h-full">
-              <div className="group h-full rounded-2xl border border-white/10 bg-[#17243A] p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#00D9C7]/40">
-                <p className="text-2xl font-extrabold tracking-tight text-[#00D9C7] md:text-[28px]">
+              <div className="group h-full rounded-2xl border border-mbx-border bg-mbx-surface p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-mbx-teal/40">
+                <p className="text-2xl font-extrabold tracking-tight text-mbx-teal md:text-[28px]">
                   {s.value !== null ? (
                     <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} duration={1800} />
                   ) : (
                     s.big
                   )}
                 </p>
-                <p className="mt-2 text-[15px] font-bold text-[#F7F8FA]">{s.label}</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-[#B8C5D8]">{s.sub}</p>
+                <p className="mt-2 text-[15px] font-bold text-mbx-navy">{s.label}</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-mbx-text-muted">{s.sub}</p>
               </div>
             </StaggerItem>
           ))}
@@ -688,7 +689,7 @@ const CAP_TABS = [
 ]
 
 const capTone = {
-  teal: 'border-[#00D9C7]/25 bg-[#00D9C7]/10 text-[#00D9C7]',
+  teal: 'border-mbx-teal/25 bg-mbx-teal/10 text-mbx-teal',
   gold: 'border-[#F59E0B]/25 bg-[#F59E0B]/10 text-[#FBBF24]',
   violet: 'border-[#8B5CF6]/30 bg-[#8B5CF6]/10 text-[#A78BFA]',
 }
@@ -700,15 +701,16 @@ function CapabilityExplorer() {
   const filtered = CAPABILITIES.filter((c) => tab === 'all' || c.category === tab || c.category === 'both')
 
   return (
-    <section className="relative overflow-hidden bg-[#0B1428] py-20 lg:py-28">
-      <div className="pointer-events-none absolute top-40 left-[-6%] size-[420px] rounded-full bg-[#00D9C7]/5 blur-[140px]" aria-hidden="true" />
+    <section className="relative overflow-hidden bg-mbx-surface py-20 lg:py-28">
+      <div className="pointer-events-none absolute top-40 left-[-6%] size-[420px] rounded-full bg-mbx-teal/10 blur-[140px]" aria-hidden="true" />
       <div className="container mx-auto px-5 md:px-6 xl:px-8">
         <SectionHead
+          dark={false}
           eyebrow="Capabilities That Compound"
           icon={Layers}
           title={
             <>
-              Eight Capabilities Built Around <span className="text-[#00D9C7]">PDGM, NOA, NOE &amp; Cap Law</span>
+              Eight Capabilities Built Around <span className="text-mbx-teal">PDGM, NOA, NOE &amp; Cap Law</span>
             </>
           }
           subtitle="One dedicated post-acute RCM squad, armed with direct FISS/DDE access, running every compliance window and revenue lever below — from front-end intake straight through the hospice cap year."
@@ -725,12 +727,12 @@ function CapabilityExplorer() {
                 onClick={() => setTab(t.key)}
                 className={`inline-flex items-center gap-3 rounded-xl border px-4 py-2.5 text-left transition-all duration-300 ${
                   active
-                    ? 'border-[#00D9C7] bg-[#00D9C7] text-[#0B1428]'
-                    : 'border-white/10 bg-[#17243A] text-[#B8C5D8] hover:border-[#00D9C7]/40'
+                    ? 'border-mbx-teal bg-mbx-teal text-white'
+                    : 'border-mbx-border bg-white text-mbx-text-muted hover:border-mbx-teal/40'
                 }`}
               >
                 <span className="text-sm font-bold">{t.label} ({t.count})</span>
-                {t.sub && <span className={`hidden text-[10px] font-semibold md:block ${active ? 'text-[#0B1428]/70' : 'text-[#B8C5D8]/70'}`}>{t.sub}</span>}
+                {t.sub && <span className={`hidden text-[10px] font-semibold md:block ${active ? 'text-white/80' : 'text-mbx-text-muted/70'}`}>{t.sub}</span>}
               </button>
             )
           })}
@@ -750,8 +752,8 @@ function CapabilityExplorer() {
               return (
                 <div
                   key={c.title}
-                  className={`group rounded-2xl border bg-[#17243A] text-left transition-all duration-300 ${
-                    isOpen ? 'border-[#00D9C7]/70' : 'border-white/10 hover:border-[#00D9C7]/40'
+                  className={`group rounded-2xl border bg-white text-left transition-all duration-300 ${
+                    isOpen ? 'border-mbx-teal/60 shadow-lg shadow-mbx-teal/5' : 'border-mbx-border hover:border-mbx-teal/40'
                   }`}
                 >
                   <div className="p-6 md:p-7">
@@ -759,21 +761,21 @@ function CapabilityExplorer() {
                       <span className={`rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-[0.14em] ${capTone[c.tone]}`}>
                         {c.badge}
                       </span>
-                      <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-bold tracking-wider text-[#B8C5D8]">
+                      <span className="rounded-full border border-mbx-border bg-mbx-surface px-2.5 py-1 text-[10px] font-bold tracking-wider text-mbx-text-muted">
                         {c.billType}
                       </span>
                     </div>
 
                     <div className="mt-4 flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
                       <div>
-                        <h3 className="text-xl font-extrabold text-[#F7F8FA] md:text-2xl">{c.title}</h3>
-                        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[#B8C5D8]">{c.desc}</p>
+                        <h3 className="text-xl font-extrabold text-mbx-navy md:text-2xl">{c.title}</h3>
+                        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-mbx-text-muted">{c.desc}</p>
                       </div>
                       <div className="shrink-0 space-y-2">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-[#00D9C7]/25 bg-[#00D9C7]/5 px-3 py-1.5 text-[11px] font-bold text-[#00D9C7]">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-mbx-teal/25 bg-mbx-teal/5 px-3 py-1.5 text-[11px] font-bold text-mbx-teal">
                           <Clock size={12} /> {c.sla}
                         </div>
-                        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-[#B8C5D8]">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-mbx-border bg-mbx-surface px-3 py-1.5 text-[11px] font-semibold text-mbx-text-muted">
                           <Shield size={12} /> {c.cms}
                         </div>
                       </div>
@@ -782,7 +784,7 @@ function CapabilityExplorer() {
                     <button
                       type="button"
                       onClick={() => setOpen(isOpen ? null : idx)}
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#00D9C7] transition-colors hover:text-[#F7F8FA]"
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-mbx-teal transition-colors hover:text-mbx-navy"
                       aria-expanded={isOpen}
                     >
                       <span>{isOpen ? 'Hide protocol' : 'View delivery protocol'}</span>
@@ -800,14 +802,14 @@ function CapabilityExplorer() {
                         transition={{ duration: 0.35, ease: 'easeInOut' }}
                         className="overflow-hidden"
                       >
-                        <div className="border-t border-white/10 bg-[#0D1629]/60 px-6 py-6 md:px-7">
-                          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#00D9C7]">
+                        <div className="border-t border-mbx-border bg-mbx-surface px-6 py-6 md:px-7">
+                          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-mbx-teal">
                             What actually gets done
                           </p>
                           <ul className="grid gap-3 md:grid-cols-2">
                             {c.deliverables.map((d) => (
-                              <li key={d} className="flex items-start gap-2.5 text-sm leading-relaxed text-[#B8C5D8]">
-                                <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-[#00D9C7]" strokeWidth={2.2} />
+                              <li key={d} className="flex items-start gap-2.5 text-sm leading-relaxed text-mbx-text-muted">
+                                <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-mbx-teal" strokeWidth={2.2} />
                                 {d}
                               </li>
                             ))}
@@ -882,10 +884,10 @@ function WhyInHouse() {
   }, [openIndex])
 
   return (
-    <section className="relative overflow-hidden bg-[#0D1629] py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-mbx-white py-20 lg:py-28">
       <div className="container mx-auto grid items-center gap-12 px-5 md:px-6 lg:grid-cols-2 xl:px-8">
         <div className="relative order-2 lg:order-1">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10">
+          <div className="relative overflow-hidden rounded-3xl border border-mbx-border">
             <AnimatePresence mode="wait">
               <motion.img
                 key={current.img}
@@ -900,34 +902,34 @@ function WhyInHouse() {
                 transition={{ duration: 0.35 }}
               />
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1428]/95 via-[#0B1428]/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-mbx-navy/95 via-mbx-navy/25 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#00D9C7] px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#0B1428]">
+              <div className="inline-flex items-center gap-2 rounded-full bg-mbx-teal px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
                 <Users size={12} strokeWidth={3} /> {current.imgBadge}
               </div>
               <p className="mt-3 max-w-md text-[15px] font-bold leading-snug text-white md:text-lg">{current.imgCaption}</p>
             </div>
           </div>
-          <div className="absolute -top-5 -right-5 hidden rounded-2xl border border-white/10 bg-[#17243A] px-5 py-4 shadow-xl shadow-black/30 md:block">
-            <p className="text-[11px] font-semibold text-[#B8C5D8]">FISS/DDE daily log-ins</p>
-            <p className="text-lg font-extrabold text-[#00D9C7]">1,240+ / mo</p>
+          <div className="absolute -top-5 -right-5 hidden rounded-2xl border border-mbx-border bg-white px-5 py-4 shadow-xl shadow-mbx-navy/10 md:block">
+            <p className="text-[11px] font-semibold text-mbx-text-muted">FISS/DDE daily log-ins</p>
+            <p className="text-lg font-extrabold text-mbx-teal">1,240+ / mo</p>
           </div>
         </div>
 
         <div className="order-1 lg:order-2">
-          <div className="rounded-3xl border border-white/10 bg-[#17243A] p-7 md:p-9">
-            <span className="mb-5 inline-flex size-12 items-center justify-center rounded-2xl bg-[#00D9C7] text-[#0B1428]">
+          <div className="rounded-3xl border border-mbx-border bg-mbx-surface p-7 md:p-9">
+            <span className="mb-5 inline-flex size-12 items-center justify-center rounded-2xl bg-mbx-teal text-white">
               <ShieldCheck size={24} strokeWidth={2.2} />
             </span>
-            <h2 className="text-2xl font-extrabold tracking-tight text-[#F7F8FA] md:text-[32px] md:leading-[1.1]">
+            <h2 className="text-2xl font-extrabold tracking-tight text-mbx-navy md:text-[32px] md:leading-[1.1]">
               Why In-House Billing Fails
               <br />
-              <span className="text-[#00D9C7]">Home Health &amp; Hospice</span>
+              <span className="text-mbx-teal">Home Health &amp; Hospice</span>
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-[#B8C5D8] md:text-[15px]">
+            <p className="mt-4 text-sm leading-relaxed text-mbx-text-muted md:text-[15px]">
               In-house teams juggling PDGM episodes, OASIS-E coding, UB-04 rules and fiscal intermediary deadlines almost
               always under-file notices, mis-price episodes, and let denials age past their appeal window. The result is{' '}
-              <span className="font-bold text-[#F7F8FA]">real, collectable Medicare cash left on the table</span> — and
+              <span className="font-bold text-mbx-navy">real, collectable Medicare cash left on the table</span> — and
               most agencies recover less than 50% of what the benefit actually earns.
             </p>
 
@@ -944,25 +946,25 @@ function WhyInHouse() {
                     }}
                     aria-haspopup="dialog"
                     className={`group flex w-full items-center gap-3.5 rounded-xl border p-4 text-left transition-colors duration-300 ${
-                      open ? 'border-[#00D9C7]/40 bg-[#0B1428]/60' : 'border-white/[0.07] bg-[#0B1428]/40 hover:border-[#00D9C7]/30'
+                      open ? 'border-mbx-teal/40 bg-white' : 'border-mbx-border bg-white/60 hover:border-mbx-teal/30'
                     }`}
                   >
                     <span
                       className={`flex size-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-extrabold transition-colors duration-300 ${
-                        open ? 'bg-[#00D9C7] text-[#0B1428]' : 'bg-white/5 text-[#00D9C7]'
+                        open ? 'bg-mbx-teal text-white' : 'bg-mbx-teal/10 text-mbx-teal'
                       }`}
                     >
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <p className={`flex-1 text-sm font-bold transition-colors duration-300 ${open ? 'text-white' : 'text-[#F7F8FA]'}`}>
+                    <p className={`flex-1 text-sm font-bold transition-colors duration-300 ${open ? 'text-mbx-teal' : 'text-mbx-navy'}`}>
                       {r.title}
                     </p>
-                    <span className="hidden items-center gap-1 text-[11px] font-bold text-[#00D9C7] opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:flex">
+                    <span className="hidden items-center gap-1 text-[11px] font-bold text-mbx-teal opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:flex">
                       View details
                     </span>
                     <span
                       className={`flex size-6 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
-                        open ? 'bg-[#00D9C7]/15 text-[#00D9C7]' : 'bg-white/5 text-[#B8C5D8]'
+                        open ? 'bg-mbx-teal/15 text-mbx-teal' : 'bg-mbx-navy/5 text-mbx-text-muted'
                       }`}
                     >
                       <ChevronDown size={14} strokeWidth={2.5} className="-rotate-90" />
@@ -996,7 +998,7 @@ function WhyInHouse() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 16, scale: 0.97 }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
-              className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-[#17243A] shadow-2xl shadow-black/60 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#00D9C7]/30"
+              className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto overscroll-contain rounded-3xl border border-mbx-border bg-white shadow-2xl shadow-mbx-navy/25 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-mbx-teal/30"
             >
               <div className="relative">
                 <img
@@ -1004,33 +1006,33 @@ function WhyInHouse() {
                   alt={risks[openIndex].title}
                   className="aspect-[16/9] w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#17243A] via-[#17243A]/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
                 <button
                   type="button"
                   onClick={() => setOpenIndex(null)}
                   aria-label="Close details"
-                  className="absolute right-4 top-4 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-[#00D9C7] hover:text-[#0B1428]"
+                  className="absolute right-4 top-4 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-mbx-teal hover:text-white"
                 >
                   <X size={18} strokeWidth={2.5} />
                 </button>
                 <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-[#00D9C7] px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#0B1428]">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-mbx-teal px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white">
                     <Users size={12} strokeWidth={3} /> {risks[openIndex].imgBadge}
                   </span>
                 </div>
               </div>
               <div className="p-6 md:p-8">
                 <div className="flex items-center gap-3">
-                  <span className="flex size-9 items-center justify-center rounded-xl bg-[#00D9C7] text-sm font-extrabold text-[#0B1428]">
+                  <span className="flex size-9 items-center justify-center rounded-xl bg-mbx-teal text-sm font-extrabold text-white">
                     {String(openIndex + 1).padStart(2, '0')}
                   </span>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#00D9C7]">Risk Detail</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-mbx-teal">Risk Detail</p>
                 </div>
-                <h3 className="mt-4 text-xl font-extrabold text-[#F7F8FA] md:text-2xl">{risks[openIndex].title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#B8C5D8] md:text-[15px]">{risks[openIndex].desc}</p>
-                <div className="mt-5 rounded-2xl border border-white/10 bg-[#0B1428]/50 p-4">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#00D9C7]">How MBX protects you</p>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-[#B8C5D8]">{risks[openIndex].imgCaption}</p>
+                <h3 className="mt-4 text-xl font-extrabold text-mbx-navy md:text-2xl">{risks[openIndex].title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-mbx-text-muted md:text-[15px]">{risks[openIndex].desc}</p>
+                <div className="mt-5 rounded-2xl border border-mbx-border bg-mbx-surface p-4">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-mbx-teal">How MBX protects you</p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-mbx-text-muted">{risks[openIndex].imgCaption}</p>
                 </div>
               </div>
             </motion.div>
@@ -1853,7 +1855,7 @@ export function FinalCta() {
 export default function HomeHealthHospice() {
   usePageSeo('/home-health-hospice')
   return (
-    <main className="bg-[#0B1428]">
+    <main className="bg-mbx-white">
       <Hero />
       <Specialization />
       <CapabilityExplorer />

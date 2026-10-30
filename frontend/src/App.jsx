@@ -18,9 +18,11 @@ const HIPAA = lazy(() => import('./pages/HIPAA'))
 const Company = lazy(() => import('./pages/Company'))
 const Resources = lazy(() => import('./pages/Resources'))
 const AccountManager = lazy(() => import('./pages/AccountManager'))
+const Pricing = lazy(() => import('./pages/Pricing'))
 const MBXAdvantage = lazy(() => import('./pages/MBXAdvantage'))
 const Software = lazy(() => import('./pages/Software'))
 const MedicalAssistant = lazy(() => import('./pages/MedicalAssistant'))
+const MedicalBilling = lazy(() => import('./pages/MedicalBilling'))
 const RCMServices = lazy(() => import('./pages/RCMServices'))
 const Capabilities = lazy(() => import('./pages/Capabilities'))
 const Solution = lazy(() => import('./pages/Solution'))
@@ -29,6 +31,7 @@ const BlogPost = lazy(() => import('./pages/BlogPost'))
 const SmallProject = lazy(() => import('./pages/SmallProject'))
 const LargeProject = lazy(() => import('./pages/LargeProject'))
 const HomeHealthHospice = lazy(() => import('./pages/HomeHealthHospice'))
+const ARRecovery = lazy(() => import('./pages/ARRecovery'))
 const Team = lazy(() => import('./pages/Team'))
 const Locations = lazy(() => import('./pages/Locations'))
 const Location = lazy(() => import('./pages/Location'))
@@ -80,9 +83,11 @@ function AppContent() {
             <Route path="/company" element={<Company />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/account-manager" element={<AccountManager />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/mbx-advantage" element={<MBXAdvantage />} />
             <Route path="/software" element={<Software />} />
             <Route path="/medical-assistant" element={<MedicalAssistant />} />
+            <Route path="/medical-billing" element={<MedicalBilling />} />
             <Route path="/rcm-services" element={<RCMServices />} />
             <Route path="/capabilities" element={<Capabilities />} />
             <Route path="/solution" element={<Solution />} />
@@ -91,6 +96,7 @@ function AppContent() {
             <Route path="/projects/small" element={<SmallProject />} />
             <Route path="/projects/large" element={<LargeProject />} />
             <Route path="/home-health-hospice" element={<HomeHealthHospice />} />
+            <Route path="/ar-recovery" element={<ARRecovery />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/locations/:slug" element={<Location />} />
             <Route path="/team" element={<Team />} />

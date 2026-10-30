@@ -18,22 +18,30 @@ function Dash() {
 }
 
 function PricingCard({ plan }) {
+  const f = plan.featured
   return (
     <div
       className={`relative flex h-full flex-col overflow-hidden rounded-2xl border p-7 transition-all duration-500 hover:-translate-y-1.5 ${
-        plan.featured
-          ? 'border-[#4486BF]/40 bg-gradient-to-b from-[#F4FAFF] to-white shadow-xl shadow-[#4486BF]/10'
+        f
+          ? 'border-[#4486BF]/50 bg-gradient-to-b from-[#0B2348] via-[#12395F] to-[#1E5C8F] shadow-2xl shadow-[#0B2348]/30 pt-16'
           : 'border-mbx-border bg-white shadow-[0_2px_16px_rgba(11,35,72,0.05)] hover:border-mbx-teal/40 hover:shadow-xl'
       }`}
     >
-      {plan.featured && (
+      {f && (
+        <>
+          <div aria-hidden className="pointer-events-none absolute -top-16 -right-14 h-40 w-40 rounded-full bg-[#4486BF]/45 blur-3xl" />
+          <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-mbx-teal via-[#7FB2E5] to-transparent" />
+        </>
+      )}
+
+      {f && (
         <motion.span
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35 }}
-          className="absolute -top-3.5 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-mbx-navy px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-mbx-navy/20"
+          className="absolute top-4 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-mbx-teal px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-mbx-teal/40"
         >
-          <Sparkles size={12} className="text-mbx-teal-light" />
+          <Sparkles size={12} />
           {plan.badge}
         </motion.span>
       )}
@@ -47,21 +55,21 @@ function PricingCard({ plan }) {
         </span>
       )}
 
-      <div className={plan.featured ? 'pt-2' : ''}>
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-mbx-teal">{plan.category}</p>
-        <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-mbx-navy">{plan.name}</h3>
-        <span className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-mbx-surface px-2.5 py-1 text-[11px] font-semibold text-mbx-text-muted">
+      <div className={f ? 'pt-2' : ''}>
+        <p className={`text-[11px] font-extrabold uppercase tracking-[0.2em] ${f ? 'text-mbx-teal-light' : 'text-mbx-teal'}`}>{plan.category}</p>
+        <h3 className={`mt-2 text-2xl font-extrabold tracking-tight ${f ? 'text-white' : 'text-mbx-navy'}`}>{plan.name}</h3>
+        <span className={`mt-3 inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-semibold ${f ? 'bg-white/10 text-white/80' : 'bg-mbx-surface text-mbx-text-muted'}`}>
           Criteria: {plan.criteria}
         </span>
       </div>
 
-      <div className="mt-6 border-t border-mbx-border pt-6">
+      <div className={`mt-6 border-t pt-6 ${f ? 'border-white/15' : 'border-mbx-border'}`}>
         {plan.price ? (
           <>
-            <p className="text-4xl font-extrabold tracking-tight text-mbx-navy">
-              {plan.price} <span className="text-xl font-bold text-mbx-text-muted">/ month</span>
+            <p className={`text-4xl font-extrabold tracking-tight ${f ? 'text-white' : 'text-mbx-navy'}`}>
+              {plan.price} <span className={`text-xl font-bold ${f ? 'text-white/70' : 'text-mbx-text-muted'}`}>/ month</span>
             </p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[#4486BF]">{plan.cadence}</p>
+            <p className={`mt-1 text-xs font-semibold uppercase tracking-wider ${f ? 'text-mbx-teal-light' : 'text-[#4486BF]'}`}>{plan.cadence}</p>
           </>
         ) : (
           <div className="flex flex-wrap items-center gap-3">
@@ -75,22 +83,22 @@ function PricingCard({ plan }) {
 
       <div className="mt-5 space-y-3">
         <div className="flex items-center gap-2.5">
-          <UserRound size={14} className="shrink-0 text-[#4486BF]" />
+          <UserRound size={14} className={`shrink-0 ${f ? 'text-mbx-teal-light' : 'text-[#4486BF]'}`} />
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-widest text-mbx-text-muted">Dedicated Staff</p>
-            <p className="text-sm font-bold text-mbx-navy">{plan.staff}</p>
+            <p className={`text-[10px] font-extrabold uppercase tracking-widest ${f ? 'text-white/60' : 'text-mbx-text-muted'}`}>Dedicated Staff</p>
+            <p className={`text-sm font-bold ${f ? 'text-white' : 'text-mbx-navy'}`}>{plan.staff}</p>
           </div>
         </div>
         <div className="flex items-center gap-2.5">
-          <Briefcase size={14} className="shrink-0 text-[#4486BF]" />
+          <Briefcase size={14} className={`shrink-0 ${f ? 'text-mbx-teal-light' : 'text-[#4486BF]'}`} />
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-widest text-mbx-text-muted">Account Management</p>
-            <p className="text-sm font-bold text-mbx-navy">{plan.accountManagement}</p>
+            <p className={`text-[10px] font-extrabold uppercase tracking-widest ${f ? 'text-white/60' : 'text-mbx-text-muted'}`}>Account Management</p>
+            <p className={`text-sm font-bold ${f ? 'text-white' : 'text-mbx-navy'}`}>{plan.accountManagement}</p>
           </div>
         </div>
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-mbx-text-muted">{plan.description}</p>
+      <p className={`mt-5 text-sm leading-relaxed ${f ? 'text-white/80' : 'text-mbx-text-muted'}`}>{plan.description}</p>
 
       {plan.custom ? (
         <div className="mt-6 flex flex-1 items-center justify-center rounded-xl border border-dashed border-[#4486BF]/25 bg-[#F6FAFF] px-4 py-8 text-center">
@@ -101,10 +109,10 @@ function PricingCard({ plan }) {
         </div>
       ) : (
         <div className="mt-6 flex-1">
-          <p className="mb-3 text-[10px] font-extrabold uppercase tracking-[0.2em] text-mbx-text-muted">What's Included</p>
+          <p className={`mb-3 text-[10px] font-extrabold uppercase tracking-[0.2em] ${f ? 'text-white/60' : 'text-mbx-text-muted'}`}>What's Included</p>
           <ul className="space-y-2.5">
             {plan.inclusions.map((inc) => (
-              <li key={inc} className="flex items-start gap-2.5 text-[13px] leading-snug text-mbx-navy">
+              <li key={inc} className={`flex items-start gap-2.5 text-[13px] leading-snug ${f ? 'text-white/90' : 'text-mbx-navy'}`}>
                 <IncludedMark />
                 {inc}
               </li>
@@ -115,10 +123,12 @@ function PricingCard({ plan }) {
 
       <Link
         to="/connect-us"
-        className={`mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${
-          plan.cta === 'Start Growth'
-            ? 'bg-[#4486BF] hover:bg-[#3a73a8] hover:shadow-[#4486BF]/25'
-            : 'bg-mbx-navy hover:bg-[#4486BF] hover:shadow-[#4486BF]/20'
+        className={`mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${
+          f
+            ? 'bg-mbx-teal text-white hover:bg-white hover:text-mbx-navy hover:shadow-white/20'
+            : plan.cta === 'Start Growth'
+              ? 'bg-[#4486BF] hover:bg-[#3a73a8] hover:shadow-[#4486BF]/25'
+              : 'bg-mbx-navy hover:bg-[#4486BF] hover:shadow-[#4486BF]/20'
         }`}
       >
         {plan.cta}
@@ -228,7 +238,7 @@ export default function PricingPlans() {
             />
           </AnimatedSection>
 
-          <StaggerChildren className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4" stagger={0.08}>
+          <StaggerChildren className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3" stagger={0.08}>
             {pricingPlans.map((plan) => (
               <StaggerItem key={plan.id} className="h-full">
                 <PricingCard plan={plan} />

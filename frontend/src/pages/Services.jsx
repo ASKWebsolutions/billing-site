@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, CheckCircle, ChevronDown, ClipboardCheck, FileText, Activity, Shield, TrendingUp, Users, Zap, Target, BarChart3, Eye, Home, HeartPulse } from 'lucide-react'
+import { ArrowRight, CheckCircle, ChevronDown, ClipboardCheck, FileText, Activity, Shield, TrendingUp, Users, Zap, Target, BarChart3, Eye, Home, Stethoscope, Heart, Syringe, Brain, Building2 } from 'lucide-react'
 import { AnimatedSection } from '../components/Animated'
 import { SectionHeading, PrimaryButton } from '../components/UI'
 import { usePageSeo } from '../hooks/useSeo'
@@ -10,18 +10,10 @@ const services = [
   {
     id: 'home-health',
     icon: Home,
-    title: 'Home Health Billing',
-    tagline: 'Full-cycle billing for home health agencies',
-    description: 'At MBX Solutions, we provide end-to-end billing for home health agencies — OASIS-based episode billing, PPS review, claim submission and A/R follow-up tailored to home care requirements.',
-    details: ['OASIS & PPS review', 'HHRG optimization', 'Episode billing', 'CWF & U423 checks', 'Claim submission', 'A/R follow-up'],
-  },
-  {
-    id: 'hospice',
-    icon: HeartPulse,
-    title: 'Hospice Billing',
-    tagline: 'Compliant billing for hospice providers',
-    description: 'At MBX Solutions, we provide specialized hospice billing covering election periods, level-of-care changes and certification periods — coded and billed accurately, fully compliant.',
-    details: ['Election statement tracking', 'Certification period billing', 'Level-of-care changes', 'Continuous home care', 'Revocation processing', 'A/R follow-up'],
+    title: 'Home Health & Hospice Billing',
+    tagline: 'Full-cycle billing for home health & hospice agencies',
+    description: 'At MBX Solutions, we provide end-to-end billing for home health and hospice agencies — OASIS-based episode billing, PPS review, election period tracking, level-of-care changes, claim submission and A/R follow-up tailored to home care and hospice requirements.',
+    details: ['OASIS & PPS review', 'HHRG optimization', 'Episode billing', 'CWF & U423 checks', 'Election statement tracking', 'Certification period billing', 'Level-of-care changes', 'Continuous home care', 'Revocation processing', 'Claim submission', 'A/R follow-up', 'Compliance monitoring'],
   },
   {
     id: 'claim-entry',
@@ -32,12 +24,20 @@ const services = [
     details: ['Patient demographic verification', 'Insurance eligibility checks', 'Multi-platform claim entry', 'Error-free data processing', 'Fast turnaround time', 'Quality assurance checks'],
   },
   {
+    id: 'medical-coding',
+    icon: FileText,
+    title: 'Medical Coding',
+    tagline: 'Precision ICD-10 coding',
+    description: 'At MBX Solutions, our certified coders ensure accurate ICD-10-CM, CPT, and HCPCS coding aligned with documentation — maximizing reimbursement and maintaining full compliance.',
+    details: ['ICD-10-CM coding', 'CPT/HCPCS coding', 'Code validation & audit', 'Documentation alignment', 'Modifier application', 'Coding compliance review'],
+  },
+  {
     id: 'claims-scrubbing',
     icon: Eye,
     title: 'Claims Scrubbing & Submission',
     tagline: 'Thoroughly reviewed, accurately coded claims',
     description: 'At MBX Solutions, we ensure every claim is thoroughly reviewed, accurately coded, and submitted on time to minimize denials, reduce rejections, and accelerate reimbursements.',
-    details: ['Pre-submission claim scrubbing', 'Coding accuracy verification', ' payer-specific rule checks', 'Electronic claim submission', 'Batch processing optimization', 'Submission tracking'],
+    details: ['Pre-submission claim scrubbing', 'Coding accuracy verification', 'Payer-specific rule checks', 'Electronic claim submission', 'Batch processing optimization', 'Submission tracking'],
   },
   {
     id: 'ar-followup',
@@ -56,20 +56,12 @@ const services = [
     details: ['Denial root cause analysis', 'Appeal letter drafting', 'Corrected claim resubmission', 'Payer communication', 'Denial trend reporting', 'Prevention strategies'],
   },
   {
-    id: 'medical-coding',
-    icon: FileText,
-    title: 'Medical Coding',
-    tagline: 'Precision ICD-10 coding',
+    id: 'claim-rejection',
+    icon: Zap,
+    title: 'Claim Rejection & Resubmission',
+    tagline: 'Fix errors, resubmit clean claims',
     description: 'At MBX Solutions, we handle claim rejections promptly by identifying errors, correcting issues, and resubmitting clean claims to ensure faster approvals and consistent revenue flow.',
-    details: ['ICD-10-CM coding', 'CPT/HCPCS coding', 'Code validation & audit', 'Documentation alignment', 'Modifier application', 'Coding compliance review'],
-  },
-  {
-    id: 'edi-eft',
-    icon: Activity,
-    title: 'EDI, ERA & EFT Setup',
-    tagline: 'Seamless electronic workflows',
-    description: 'At MBX Solutions, we streamline EDI, ERA, and EFT enrollments to ensure faster claim processing, secure electronic payments, and efficient remittance management for your practice.',
-    details: ['EDI enrollment setup', 'ERA configuration', 'EFT bank setup', 'Clearinghouse integration', 'Payer connectivity', 'Testing & validation'],
+    details: ['Rejection analysis', 'Error correction', 'Clean claim resubmission', 'Payer-specific fixes', 'Turnaround tracking', 'Revenue recovery'],
   },
   {
     id: 'credentialing',
@@ -80,12 +72,12 @@ const services = [
     details: ['Provider credentialing', 'Payer enrollment', 'CAQH profile setup', 'Recredentialing management', 'Contract negotiation', 'Enrollment tracking'],
   },
   {
-    id: 'claim-rejection',
-    icon: Zap,
-    title: 'Claim Rejection & Resubmission',
-    tagline: 'Fix errors, resubmit clean claims',
-    description: 'At MBX Solutions, we handle claim rejections promptly by identifying errors, correcting issues, and resubmitting clean claims to ensure faster approvals and consistent revenue flow.',
-    details: ['Rejection analysis', 'Error correction', 'Clean claim resubmission', 'Payer-specific fixes', 'Turnaround tracking', 'Revenue recovery'],
+    id: 'edi-eft',
+    icon: Activity,
+    title: 'EDI, ERA & EFT Setup',
+    tagline: 'Seamless electronic workflows',
+    description: 'At MBX Solutions, we streamline EDI, ERA, and EFT enrollments to ensure faster claim processing, secure electronic payments, and efficient remittance management for your practice.',
+    details: ['EDI enrollment setup', 'ERA configuration', 'EFT bank setup', 'Clearinghouse integration', 'Payer connectivity', 'Testing & validation'],
   },
   {
     id: 'patient-collections',
@@ -111,14 +103,6 @@ const services = [
     description: 'At MBX Solutions, we provide detailed analytics and reporting to track financial performance, identify revenue gaps, and support smarter decisions for stronger practice growth and profitability.',
     details: ['Financial dashboards', 'Revenue trend analysis', 'Payer performance reports', 'KPI tracking', 'Custom report generation', 'Growth forecasting'],
   },
-  {
-    id: 'free-audit',
-    icon: Eye,
-    title: 'Free Billing Audit',
-    tagline: 'Discover hidden revenue',
-    description: 'At MBX Solutions, we provide a free audit on your practice of the last 3 months — even if you\'re with another billing company — and provide you a report on where revenue exists and how much we can improve it.',
-    details: ['3-month billing review', 'Revenue leakage analysis', 'Denial pattern assessment', 'Compliance risk check', 'Improvement roadmap', 'ROI projection'],
-  },
 ]
 
 const specialties = [
@@ -130,10 +114,13 @@ const specialties = [
   { title: 'Private Practice', desc: 'MBX Solutions delivers full-cycle revenue management for independent practices across family medicine, cardiology, PT, and more.' },
 ]
 
+const specialtyIcons = [Stethoscope, Heart, Syringe, Activity, Brain, Building2]
+
 export default function Services() {
   usePageSeo('/services')
   const [expandedService, setExpandedService] = useState(null)
   const [activeSpecialty, setActiveSpecialty] = useState(0)
+  const ActiveSpecialtyIcon = specialtyIcons[activeSpecialty]
 
   return (
     <>
@@ -299,7 +286,7 @@ export default function Services() {
       </section>
 
       {/* Specialties */}
-      <section className="py-28 lg:py-36 bg-mbx-surface">
+      <section id="specialties" className="py-28 lg:py-36 bg-mbx-surface">
         <div className="container mx-auto">
           <AnimatedSection>
             <SectionHeading
@@ -310,32 +297,87 @@ export default function Services() {
           </AnimatedSection>
 
           <AnimatedSection delay={0.2}>
-            <div className="mx-auto max-w-5xl">
-              <div className="flex flex-col gap-8 lg:flex-row">
-                <div className="lg:w-2/5 space-y-2">
-                  {specialties.map((s, i) => (
-                    <button
-                      key={s.title}
-                      onClick={() => setActiveSpecialty(i)}
-                      className={`w-full text-left rounded-xl px-5 py-4 text-sm font-bold transition-all duration-300 ${
-                        activeSpecialty === i
-                          ? 'bg-[#4486BF] text-white shadow-lg'
-                          : 'bg-mbx-white text-mbx-text-muted border border-mbx-border hover:border-mbx-teal/30 hover:text-mbx-navy'
-                      }`}
-                    >
-                      {s.title}
-                    </button>
-                  ))}
-                </div>
-                <div className="lg:w-3/5">
-                  <div className="rounded-2xl border border-mbx-border bg-mbx-white p-8 lg:p-10 min-h-[200px]">
-                    <h3 className="text-2xl font-extrabold text-mbx-navy mb-3">{specialties[activeSpecialty].title}</h3>
-                    <p className="text-mbx-text-muted leading-relaxed mb-6">{specialties[activeSpecialty].desc}</p>
-                    <Link to="/connect-us" className="inline-flex items-center gap-2 text-sm font-bold text-mbx-teal hover:text-mbx-teal-dark transition-colors">
-                      Learn More <ArrowRight size={14} />
-                    </Link>
+            <div className="mx-auto max-w-6xl">
+              {/* Specialty Tabs */}
+              <div className="mb-10 flex flex-wrap justify-center gap-2.5">
+                {specialties.map((s, i) => (
+                  <button
+                    key={s.title}
+                    onClick={() => setActiveSpecialty(i)}
+                    className={`relative rounded-full px-6 py-3 text-sm font-bold transition-all duration-300 ${
+                      activeSpecialty === i
+                        ? 'bg-[#4486BF] text-white shadow-lg shadow-[#4486BF]/25 scale-105'
+                        : 'bg-mbx-white text-mbx-text-muted border border-mbx-border hover:border-mbx-teal/40 hover:text-mbx-navy hover:shadow-md'
+                    }`}
+                  >
+                    {s.title}
+                  </button>
+                ))}
+              </div>
+
+              {/* Content Panel */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSpecialty}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  className="relative overflow-hidden rounded-3xl border border-mbx-border bg-mbx-white shadow-xl shadow-mbx-navy/5"
+                >
+                  {/* Decorative gradient corner */}
+                  <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-[#4486BF]/8 blur-3xl" />
+                  <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-mbx-teal/5 blur-3xl" />
+
+                  <div className="relative z-10 flex flex-col gap-8 p-8 lg:flex-row lg:items-center lg:p-12">
+                    {/* Left: Icon badge */}
+                    <div className="flex shrink-0 items-center justify-center">
+                      <div className="flex size-24 items-center justify-center rounded-3xl bg-gradient-to-br from-[#4486BF] to-[#2d6a9a] text-white shadow-xl shadow-[#4486BF]/30 lg:size-28">
+                        <ActiveSpecialtyIcon size={40} strokeWidth={1.5} />
+                      </div>
+                    </div>
+
+                    {/* Right: Content */}
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-2xl font-extrabold text-mbx-navy lg:text-3xl">
+                        {specialties[activeSpecialty].title}
+                      </h3>
+                      <div className="mb-5 h-1 w-16 rounded-full bg-gradient-to-r from-[#4486BF] to-mbx-teal" />
+                      <p className="mb-7 max-w-2xl text-base leading-relaxed text-mbx-text-muted lg:text-lg">
+                        {specialties[activeSpecialty].desc}
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        <Link
+                          to="/connect-us"
+                          className="group inline-flex items-center gap-2 rounded-xl bg-[#4486BF] px-6 py-3 text-sm font-bold text-white transition-all hover:bg-[#3a73a8] hover:shadow-lg hover:shadow-[#4486BF]/20"
+                        >
+                          Learn More
+                          <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                        </Link>
+                        <Link
+                          to="/connect-us"
+                          className="inline-flex items-center gap-2 rounded-xl border-2 border-mbx-navy/15 px-6 py-3 text-sm font-bold text-mbx-navy transition-all hover:border-mbx-navy hover:bg-mbx-navy hover:text-white"
+                        >
+                          Get Free Audit
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Dot indicators */}
+              <div className="mt-8 flex justify-center gap-2">
+                {specialties.map((s, i) => (
+                  <button
+                    key={s.title}
+                    onClick={() => setActiveSpecialty(i)}
+                    aria-label={s.title}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      activeSpecialty === i ? 'w-8 bg-[#4486BF]' : 'w-2 bg-mbx-border hover:bg-mbx-teal/40'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
           </AnimatedSection>

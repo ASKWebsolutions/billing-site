@@ -10,9 +10,9 @@ const slides = [
     bg: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1920&auto=format&fit=crop&q=80',
     giant: 'RCM',
     eyebrow: 'MBX Solutions',
-    lines: ['Leave Billing To Us.', 'Focus On What', 'Matters Most.'],
+    lines: ['Stop Writing Off Claims.', 'Recover Your', 'Trapped Cash.'],
     highlightIndex: 2,
-    para: null,
+    para: 'Most healthcare practices lose $40,000 to $180,000 every year simply because claims sit stuck in unpaid aging buckets until the Timely Filing Limit (TFL) is crossed.',
     card: {
       title: 'Why MBX Solutions',
       tagline: 'Full-cycle RCM, simplified for your practice.',
@@ -23,7 +23,7 @@ const slides = [
       ],
     },
     buttons: [
-      { label: 'Get Your Free Billing Audit', to: '/connect-us' },
+      { label: 'Get Your Free Billing Audit', to: '/free-billing-audit' },
       { label: 'Explore Our Capabilities', to: '/capabilities' },
     ],
   },
@@ -45,7 +45,7 @@ const slides = [
       ],
     },
     buttons: [
-      { label: 'Get Your Free Billing Audit', to: '/connect-us' },
+      { label: 'Get Your Free Billing Audit', to: '/free-billing-audit' },
       { label: 'Explore Services', to: '/services' },
     ],
   },
@@ -67,7 +67,7 @@ const slides = [
       ],
     },
     buttons: [
-      { label: 'Get Your Free Billing Audit', to: '/connect-us' },
+      { label: 'Get Your Free Billing Audit', to: '/free-billing-audit' },
       { label: 'Explore Services', to: '/services' },
     ],
   },

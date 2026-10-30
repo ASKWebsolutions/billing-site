@@ -10,12 +10,19 @@ const SPECIALTY_OPTIONS = [
   'DME',
   'Urgent Care',
   'Home Health',
+  'Hospice',
   'Other',
 ]
 
 const CENSUS_OPTIONS = [...Array.from({ length: 10 }, (_, i) => String(i + 1)), 'Other']
 
 const EHR_OPTIONS = [
+  'Kinnser',
+  'Axxess',
+  'Alora',
+  'Waystar',
+  'Enova',
+  'DrChrono',
   'eClinicalWorks',
   'Kareo',
   'AdvancedMD',
