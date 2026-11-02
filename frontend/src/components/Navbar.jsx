@@ -242,17 +242,6 @@ const navItems = [
     path: '/mbx-advantage',
   },
   {
-    label: 'Software',
-    path: '/software',
-    children: [
-      { heading: 'Software', items: [
-        { label: 'Billing Software', path: '/software' },
-        { label: 'RCM Dashboard', path: '/software#dashboard' },
-        { label: 'Coding Tools', path: '/software#coding' },
-      ]},
-    ],
-  },
-  {
     label: 'RCM Services',
     path: '/rcm-services',
     children: [
@@ -263,6 +252,11 @@ const navItems = [
         { label: 'Denial Management', path: '/rcm-services#denial' },
         { label: 'A-R Recovery', path: '/ar-recovery' },
       ]},
+      // { heading: 'Software', items: [
+      //   { label: 'Billing Software', path: '/software' },
+      //   { label: 'RCM Dashboard', path: '/software#dashboard' },
+      //   { label: 'Coding Tools', path: '/software#coding' },
+      // ]},
     ],
   },
   {
