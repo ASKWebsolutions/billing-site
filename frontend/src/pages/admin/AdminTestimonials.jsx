@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader, EmptyState, ConfirmDialog, Toast } from '../../components/admin/AdminUI'
 import { Star, Plus, Pencil, Trash2, Eye, EyeOff, Quote, X, Check, Ban, Clock, User, Shield } from 'lucide-react'
-import { API, adminHeaders, handleUnauthorized } from '../../utils/adminApi'
+import { API, adminHeaders, adminAuthHeaders, handleUnauthorized } from '../../utils/adminApi'
 
-const emptyForm = { name: '', role: '', content: '', rating: 5 }
+const emptyForm = { name: '', role: '', content: '', rating: 5, image: '', videoUrl: '' }
+const MAX_UPLOAD_MB = 50
 
 export default function AdminTestimonials() {
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const [imageFile, setImageFile] = useState(null)
+  const [videoFile, setVideoFile] = useState(null)
   const [editingId, setEditingId] = useState(null)
   const [saving, setSaving] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(null)
@@ -27,12 +30,24 @@ export default function AdminTestimonials() {
   }
 
   const openForm = (t = null) => {
-    if (t) { setForm({ name: t.name, role: t.role, content: t.content, rating: t.rating }); setEditingId(t._id) }
+    setImageFile(null)
+    setVideoFile(null)
+    if (t) { setForm({ name: t.name, role: t.role, content: t.content, rating: t.rating, image: t.image || '', videoUrl: t.videoUrl || '' }); setEditingId(t._id) }
     else { setForm(emptyForm); setEditingId(null) }
     setShowForm(true)
   }
 
-  const closeForm = () => { setShowForm(false); setEditingId(null); setForm(emptyForm) }
+  const closeForm = () => { setShowForm(false); setEditingId(null); setForm(emptyForm); setImageFile(null); setVideoFile(null) }
+
+  const pickFile = (setter) => (e) => {
+    const file = e.target.files?.[0] || null
+    if (file && file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+      setToast({ message: `File is too large (max ${MAX_UPLOAD_MB}MB)`, type: 'error' })
+      e.target.value = ''
+      return
+    }
+    setter(file)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -40,12 +55,28 @@ export default function AdminTestimonials() {
     const method = editingId ? 'PUT' : 'POST'
     const url = editingId ? `${API}/api/testimonials/${editingId}` : `${API}/api/testimonials`
     try {
-      const res = await fetch(url, { method, headers: adminHeaders(), body: JSON.stringify(form) })
+      let headers, body
+      if (imageFile || videoFile) {
+        // multipart — browser must set Content-Type (with boundary) itself
+        const fd = new FormData()
+        Object.entries(form).forEach(([k, v]) => fd.append(k, v ?? ''))
+        if (imageFile) fd.append('image', imageFile)
+        if (videoFile) fd.append('video', videoFile)
+        headers = adminAuthHeaders()
+        body = fd
+      } else {
+        headers = adminHeaders()
+        body = JSON.stringify(form)
+      }
+      const res = await fetch(url, { method, headers, body })
       if (handleUnauthorized(res)) return
       if (res.ok) {
         setToast({ message: editingId ? 'Testimonial updated' : 'Testimonial added', type: 'success' })
         closeForm(); fetchTestimonials()
-      } else setToast({ message: 'Failed to save', type: 'error' })
+      } else {
+        const err = await res.json().catch(() => ({}))
+        setToast({ message: err.error || 'Failed to save', type: 'error' })
+      }
     } catch { setToast({ message: 'Failed to save', type: 'error' }) }
     setSaving(false)
   }
@@ -131,8 +162,8 @@ export default function AdminTestimonials() {
                       className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
                   </div>
                   <div>
-                    <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Role / Title *</label>
-                    <input required value={form.role} onChange={e => setForm({ ...form, role: e.target.value })} placeholder="e.g. Hospice Director"
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Role / Title</label>
+                    <input value={form.role} onChange={e => setForm({ ...form, role: e.target.value })} placeholder="e.g. Hospice Director"
                       className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
                   </div>
                 </div>
@@ -149,6 +180,48 @@ export default function AdminTestimonials() {
                         <Star size={22} className={n <= form.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'} />
                       </button>
                     ))}
+                  </div>
+                </div>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Image URL (optional)</label>
+                    <input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} placeholder="https://example.com/image.jpg"
+                      className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
+                    <label className="mb-1.5 mt-3 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Or upload image</label>
+                    <input type="file" accept="image/*" onChange={pickFile(setImageFile)}
+                      className="block w-full cursor-pointer rounded-xl border border-dashed border-[#DEE4EB] bg-[#F5F8FA] px-3 py-2 text-xs text-[#5A6B82] file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-[#4486BF]/10 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-[#4486BF] hover:border-[#4486BF]/40 transition-all" />
+                    {imageFile ? (
+                      <div className="mt-2 flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2">
+                        <img src={URL.createObjectURL(imageFile)} alt="" className="size-8 rounded object-cover" />
+                        <span className="flex-1 truncate text-xs font-bold text-emerald-700">{imageFile.name}</span>
+                        <button type="button" onClick={() => setImageFile(null)} className="text-emerald-600 hover:text-red-500" aria-label="Remove image">
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : form.image && editingId ? (
+                      <div className="mt-2 flex items-center gap-2 rounded-lg bg-[#F5F8FA] px-3 py-2">
+                        <img src={form.image} alt="" className="size-8 rounded object-cover" onError={e => { e.target.style.display = 'none' }} />
+                        <span className="flex-1 truncate text-xs text-[#5A6B82]">Current image saved</span>
+                      </div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Video URL (optional)</label>
+                    <input value={form.videoUrl} onChange={e => setForm({ ...form, videoUrl: e.target.value })} placeholder="https://youtube.com/watch?v=... or direct video URL"
+                      className="w-full rounded-xl border border-[#DEE4EB] bg-[#F5F8FA] px-4 py-2.5 text-sm text-[#0B2348] outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 focus:bg-white" />
+                    <label className="mb-1.5 mt-3 block text-[11px] font-bold uppercase tracking-wider text-[#5A6B82]">Or upload video (max {MAX_UPLOAD_MB}MB)</label>
+                    <input type="file" accept="video/*" onChange={pickFile(setVideoFile)}
+                      className="block w-full cursor-pointer rounded-xl border border-dashed border-[#DEE4EB] bg-[#F5F8FA] px-3 py-2 text-xs text-[#5A6B82] file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-[#4486BF]/10 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-[#4486BF] hover:border-[#4486BF]/40 transition-all" />
+                    {videoFile ? (
+                      <div className="mt-2 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2">
+                        <span className="flex-1 truncate text-xs font-bold text-blue-700">{videoFile.name}</span>
+                        <button type="button" onClick={() => setVideoFile(null)} className="text-blue-600 hover:text-red-500" aria-label="Remove video">
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : form.videoUrl && editingId ? (
+                      <div className="mt-2 rounded-lg bg-[#F5F8FA] px-3 py-2 text-xs text-[#5A6B82]">Current video saved</div>
+                    ) : null}
                   </div>
                 </div>
                 <div className="mt-6 flex gap-3">
@@ -306,12 +379,17 @@ export default function AdminTestimonials() {
                             <EyeOff size={10} /> Inactive
                           </span>
                         )}
+                        {t.image && <span className="text-[10px] text-green-600 font-bold">Has Image</span>}
+                        {t.videoUrl && <span className="text-[10px] text-blue-600 font-bold">Has Video</span>}
                       </div>
 
                       <div className="flex gap-0.5 mb-2">
                         {[...Array(t.rating || 5)].map((_, j) => <Star key={j} size={14} className="fill-yellow-400 text-yellow-400" />)}
                       </div>
                       <p className="text-sm leading-relaxed text-[#5A6B82] line-clamp-2 mb-3">&ldquo;{t.content}&rdquo;</p>
+                      {t.image && (
+                        <img src={t.image} alt="" className="mb-3 h-16 w-16 rounded-lg object-cover border border-[#DEE4EB]" onError={(e) => { e.target.style.display = 'none' }} />
+                      )}
 
                       <div className="flex items-center gap-3">
                         <div className="flex size-8 items-center justify-center rounded-full bg-[#0B2348] text-[10px] font-bold text-white">

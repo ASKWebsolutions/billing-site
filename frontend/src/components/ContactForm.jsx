@@ -44,7 +44,7 @@ function SmartSelect({ label, options, value, onChange, other, onOtherChange, ot
         name={inputName}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-xl border border-mbx-border bg-mbx-surface px-4 text-sm text-mbx-navy outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 ${compact ? 'py-2' : 'py-3'}`}
+        className={`w-full rounded-xl border border-mbx-border bg-white px-4 text-sm text-mbx-navy outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 hover:border-[#4486BF]/40 ${compact ? 'py-2' : 'py-3'}`}
       >
         <option value="" disabled>
           {placeholder}
@@ -139,23 +139,27 @@ export default function ContactForm({ compact, className }) {
   }
 
   return (
-    <div className={`rounded-2xl border border-mbx-border bg-white shadow-2xl shadow-mbx-navy/40 ${compact ? 'flex flex-col p-4 md:p-6' : 'p-6 md:p-8'} ${className || ''}`}>
+    <div className={`relative overflow-hidden rounded-3xl border border-mbx-border bg-white shadow-2xl shadow-mbx-navy/20 ${compact ? 'flex flex-col p-4 md:p-6' : 'p-6 md:p-8'} ${className || ''}`}>
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#4486BF] via-mbx-teal to-[#4486BF]" />
       {sent ? (
         <div className="py-8 text-center md:py-10">
-          <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-green-100 text-green-600">
-            <CheckCircle size={26} />
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-green-100 to-green-50 text-green-600 shadow-lg shadow-green-500/10">
+            <CheckCircle size={28} />
           </div>
           <h3 className="text-xl md:text-2xl font-extrabold text-mbx-navy mb-2">Message Sent!</h3>
           <p className="text-mbx-text-muted">Thank you for reaching out. We'll get back to you shortly.</p>
-          <button onClick={() => setSent(false)} className="mt-5 text-sm font-bold text-[#4486BF] hover:underline">
+          <button onClick={() => setSent(false)} className="mt-5 text-sm font-bold text-[#4486BF] hover:text-mbx-teal transition-colors">
             Send another message
           </button>
         </div>
       ) : (
         <>
           <div className={compact ? 'mb-4 text-center' : 'mb-6 text-center'}>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#4486BF]/20 bg-[#4486BF]/5 px-4 py-1.5 mb-3 text-xs font-bold tracking-wider uppercase text-[#4486BF]">
+              Free Consultation
+            </div>
             <h3 className={`font-extrabold text-mbx-navy ${compact ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>
-              Get Your <span className="text-[#4486BF]">Free Audit</span>
+              Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4486BF] to-mbx-teal">Free Audit</span>
             </h3>
             {!compact && (
               <p className="mt-1.5 text-sm text-mbx-text-muted">
@@ -180,7 +184,7 @@ export default function ContactForm({ compact, className }) {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Your name"
-                  className={`w-full rounded-xl border border-mbx-border bg-mbx-surface px-4 text-sm text-mbx-navy outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 ${compact ? 'py-2' : 'py-3'}`}
+                  className={`w-full rounded-xl border border-mbx-border bg-white px-4 text-sm text-mbx-navy outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 hover:border-[#4486BF]/40 ${compact ? 'py-2' : 'py-3'}`}
                 />
               </div>
               <div>
@@ -270,16 +274,16 @@ export default function ContactForm({ compact, className }) {
                 value={form.message}
                 onChange={handleChange}
                 placeholder="Your message..."
-                className={`w-full resize-none rounded-xl border border-mbx-border bg-mbx-surface px-4 text-sm text-mbx-navy outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 ${compact ? 'flex-1 min-h-[60px] py-2' : 'py-3'}`}
+                className={`w-full resize-none rounded-xl border border-mbx-border bg-white px-4 text-sm text-mbx-navy outline-none transition-all focus:border-[#4486BF] focus:ring-2 focus:ring-[#4486BF]/10 hover:border-[#4486BF]/40 ${compact ? 'flex-1 min-h-[60px] py-2' : 'py-3'}`}
               />
             </div>
             <button
               type="submit"
               disabled={sending}
-              className={`inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#4486BF] px-8 font-bold text-white transition-all duration-300 hover:bg-[#3a73a8] hover:shadow-lg hover:shadow-[#4486BF]/20 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${compact ? 'mt-4 py-3 text-sm' : 'mt-6 py-3.5 text-base'}`}
+              className={`group inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#4486BF] to-[#3a73a8] px-8 font-bold text-white transition-all duration-300 hover:shadow-xl hover:shadow-[#4486BF]/30 hover:-translate-y-0.5 hover:from-[#3a73a8] hover:to-[#2d5c85] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none ${compact ? 'mt-4 py-3 text-sm' : 'mt-6 py-3.5 text-base'}`}
             >
-              {sending ? 'Sending...' : 'Send Message'}
-              {!sending && <ArrowRight size={16} />}
+              {sending ? 'Sending...' : 'Request Free Audit'}
+              {!sending && <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />}
             </button>
           </form>
         </>

@@ -8,9 +8,14 @@
 
 export const API = import.meta.env?.VITE_API_URL || 'http://localhost:5000'
 
+/** Auth only — use for FormData uploads so the browser sets the multipart boundary. */
+export const adminAuthHeaders = () => ({
+  Authorization: `Bearer ${localStorage.getItem('mbx_admin_token')}`,
+})
+
 export const adminHeaders = () => ({
   'Content-Type': 'application/json',
-  Authorization: `Bearer ${localStorage.getItem('mbx_admin_token')}`,
+  ...adminAuthHeaders(),
 })
 
 /**

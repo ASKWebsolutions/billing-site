@@ -242,24 +242,6 @@ const navItems = [
     path: '/mbx-advantage',
   },
   {
-    label: 'RCM Services',
-    path: '/rcm-services',
-    children: [
-      { heading: 'RCM Services', items: [
-        { label: 'Revenue Cycle Management', path: '/rcm-services' },
-        { label: 'Medical Coding', path: '/rcm-services#coding' },
-        { label: 'AR Follow-up', path: '/rcm-services#ar' },
-        { label: 'Denial Management', path: '/rcm-services#denial' },
-        { label: 'A-R Recovery', path: '/ar-recovery' },
-      ]},
-      // { heading: 'Software', items: [
-      //   { label: 'Billing Software', path: '/software' },
-      //   { label: 'RCM Dashboard', path: '/software#dashboard' },
-      //   { label: 'Coding Tools', path: '/software#coding' },
-      // ]},
-    ],
-  },
-  {
     label: 'Solution',
     path: '/solution',
     children: [
@@ -268,6 +250,13 @@ const navItems = [
         { label: 'Billing & Coding', path: '/solution#billing' },
         { label: 'OASIS & QA', path: '/solution#oasis' },
         { label: 'Reporting', path: '/solution#reporting' },
+      ]},
+      { heading: 'RCM Services', items: [
+        { label: 'Revenue Cycle Management', path: '/rcm-services' },
+        { label: 'Medical Coding', path: '/rcm-services#coding' },
+        { label: 'AR Follow-up', path: '/rcm-services#ar' },
+        { label: 'Denial Management', path: '/rcm-services#denial' },
+        { label: 'A-R Recovery', path: '/ar-recovery' },
       ]},
     ],
   },
