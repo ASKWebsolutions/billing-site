@@ -23,7 +23,7 @@ export const getAllTestimonials = async (req, res) => {
 // Public - user submit review
 export const submitReview = async (req, res) => {
   try {
-    const { name, role, content, rating } = req.body
+    const { name, role, content, rating, image, videoUrl } = req.body
     if (!name || !content) {
       return res.status(400).json({ error: 'Name and review are required' })
     }
@@ -32,6 +32,8 @@ export const submitReview = async (req, res) => {
       role: role || '',
       content,
       rating: rating || 5,
+      image: image || '',
+      videoUrl: videoUrl || '',
       source: 'user',
       approved: false,
       active: true,
@@ -45,11 +47,20 @@ export const submitReview = async (req, res) => {
 // Admin - create
 export const createTestimonial = async (req, res) => {
   try {
-    const { name, role, content, rating } = req.body
-    if (!name || !role || !content) {
-      return res.status(400).json({ error: 'Name, role and content are required' })
+    const { name, role, content, rating, image, videoUrl } = req.body
+    if (!name || !content) {
+      return res.status(400).json({ error: 'Name and content are required' })
     }
-    const testimonial = await Testimonial.create({ name, role, content, rating, source: 'admin', approved: true })
+    const testimonial = await Testimonial.create({ 
+      name, 
+      role: role || '', 
+      content, 
+      rating: rating || 5, 
+      image: image || '', 
+      videoUrl: videoUrl || '', 
+      source: 'admin', 
+      approved: true 
+    })
     res.status(201).json(testimonial)
   } catch (err) {
     res.status(500).json({ error: err.message })

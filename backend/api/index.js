@@ -1,8 +1,11 @@
+// Load env before anything reads process.env (cloudinary.config runs at import).
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import { v2 as cloudinary } from 'cloudinary'
 import jwt from 'jsonwebtoken'
+import testimonialUpload from '../middleware/testimonialUpload.js'
 
 // ── Models ──
 const gallerySchema = new mongoose.Schema({
@@ -32,6 +35,11 @@ const testimonialSchema = new mongoose.Schema({
   role: { type: String, default: '' },
   content: { type: String, required: true },
   rating: { type: Number, default: 5, min: 1, max: 5 },
+  image: { type: String, default: '' },
+  videoUrl: { type: String, default: '' },
+  // Cloudinary asset ids so delete/replace can clean up what we uploaded.
+  imagePublicId: { type: String, default: '' },
+  videoPublicId: { type: String, default: '' },
   active: { type: Boolean, default: true },
   approved: { type: Boolean, default: false },
   source: { type: String, enum: ['admin', 'user'], default: 'admin' },
@@ -320,18 +328,82 @@ app.delete('/api/contact/:id', auth, async (req, res) => {
   res.json({ message: 'Deleted' })
 })
 
-// ── Testimonial Routes ──
+// ── Testimonial Routes ──────────────────────────────────────────────────────
+// Accepts multipart/form-data with optional `image` and `video` files (Cloudinary
+// upload) alongside the text fields. Plain JSON with URL strings still works.
+const testimonialMedia = testimonialUpload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'video', maxCount: 1 },
+])
+
+function destroyAsset(publicId, resourceType = 'image') {
+  if (!publicId) return
+  cloudinary.uploader.destroy(publicId, { resource_type: resourceType })
+    .catch(() => {}) // best-effort cleanup, never block the response
+}
+
+// Pull media out of an upload request. New files win over URL strings; when no
+// file is sent the URL fields (or the existing values on partial updates) apply.
+function mediaFromRequest(req, existing = {}) {
+  const imageFile = req.files?.image?.[0]
+  const videoFile = req.files?.video?.[0]
+  const bodyImage = typeof req.body?.image === 'string' ? req.body.image.trim() : null
+  const bodyVideo = typeof req.body?.videoUrl === 'string' ? req.body.videoUrl.trim() : null
+
+  let image, imagePublicId
+  if (imageFile) {
+    image = imageFile.path
+    imagePublicId = imageFile.filename
+  } else if (bodyImage !== null) {
+    image = bodyImage
+    imagePublicId = bodyImage === existing.image ? (existing.imagePublicId || '') : ''
+  } else {
+    image = existing.image || ''
+    imagePublicId = existing.imagePublicId || ''
+  }
+
+  let videoUrl, videoPublicId
+  if (videoFile) {
+    videoUrl = videoFile.path
+    videoPublicId = videoFile.filename
+  } else if (bodyVideo !== null) {
+    videoUrl = bodyVideo
+    videoPublicId = bodyVideo === existing.videoUrl ? (existing.videoPublicId || '') : ''
+  } else {
+    videoUrl = existing.videoUrl || ''
+    videoPublicId = existing.videoPublicId || ''
+  }
+
+  return { image, imagePublicId, videoUrl, videoPublicId, imageFile, videoFile }
+}
+
+// Remove Cloudinary assets that were replaced or cleared by an update.
+function cleanupReplacedMedia(existing, next) {
+  if (existing.imagePublicId && existing.imagePublicId !== next.imagePublicId && existing.image !== next.image) {
+    destroyAsset(existing.imagePublicId, 'image')
+  }
+  if (existing.videoPublicId && existing.videoPublicId !== next.videoPublicId && existing.videoUrl !== next.videoUrl) {
+    destroyAsset(existing.videoPublicId, 'video')
+  }
+}
+
 app.get('/api/testimonials', async (req, res) => {
   await connectDB()
   const testimonials = await Testimonial.find({ active: true, approved: true }).sort({ order: 1, createdAt: -1 })
   res.json(testimonials)
 })
 
-app.post('/api/testimonials/submit', async (req, res) => {
+app.post('/api/testimonials/submit', testimonialMedia, async (req, res) => {
   await connectDB()
   const { name, role, content, rating } = req.body
   if (!name || !content) return res.status(400).json({ error: 'Name and review required' })
-  await Testimonial.create({ name, role: role || '', content, rating: rating || 5, source: 'user', approved: false, active: true })
+  const media = mediaFromRequest(req)
+  await Testimonial.create({
+    name, role: role || '', content, rating: rating || 5,
+    image: media.image, videoUrl: media.videoUrl,
+    imagePublicId: media.imagePublicId, videoPublicId: media.videoPublicId,
+    source: 'user', approved: false, active: true,
+  })
   res.status(201).json({ message: 'Review submitted. It will appear after approval.' })
 })
 
@@ -342,23 +414,54 @@ app.get('/api/testimonials/all', auth, async (req, res) => {
   res.json(testimonials)
 })
 
-app.post('/api/testimonials', auth, async (req, res) => {
+app.post('/api/testimonials', auth, testimonialMedia, async (req, res) => {
   await connectDB()
   const { name, role, content, rating } = req.body
-  if (!name || !role || !content) return res.status(400).json({ error: 'Name, role and content required' })
-  const testimonial = await Testimonial.create({ name, role, content, rating, source: 'admin', approved: true })
+  if (!name || !content) return res.status(400).json({ error: 'Name and review required' })
+  const media = mediaFromRequest(req)
+  const testimonial = await Testimonial.create({
+    name, role: role || '', content, rating: rating || 5,
+    image: media.image, videoUrl: media.videoUrl,
+    imagePublicId: media.imagePublicId, videoPublicId: media.videoPublicId,
+    source: 'admin', approved: true,
+  })
   res.status(201).json(testimonial)
 })
 
-app.put('/api/testimonials/:id', auth, async (req, res) => {
+app.put('/api/testimonials/:id', auth, testimonialMedia, async (req, res) => {
   await connectDB()
-  const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  const existing = await Testimonial.findById(req.params.id)
+  if (!existing) return res.status(404).json({ error: 'Testimonial not found' })
+
+  const media = mediaFromRequest(req, existing)
+  cleanupReplacedMedia(existing, media)
+
+  // Only pass fields the client is allowed to change; media comes from above so
+  // a partial JSON update (approve/toggle) can never wipe an upload.
+  const update = { ...req.body }
+  delete update._id
+  delete update.__v
+  delete update.createdAt
+  delete update.updatedAt
+  delete update.source
+  delete update.imagePublicId
+  delete update.videoPublicId
+  update.image = media.image
+  update.imagePublicId = media.imagePublicId
+  update.videoUrl = media.videoUrl
+  update.videoPublicId = media.videoPublicId
+
+  const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, update, { new: true })
   res.json(testimonial)
 })
 
 app.delete('/api/testimonials/:id', auth, async (req, res) => {
   await connectDB()
-  await Testimonial.findByIdAndDelete(req.params.id)
+  const testimonial = await Testimonial.findByIdAndDelete(req.params.id)
+  if (testimonial) {
+    destroyAsset(testimonial.imagePublicId, 'image')
+    destroyAsset(testimonial.videoPublicId, 'video')
+  }
   res.json({ message: 'Deleted' })
 })
 
@@ -634,6 +737,23 @@ app.post('/api/chat/admin/:sessionId/read', auth, async (req, res) => {
     await ChatSession.findOneAndUpdate({ sessionId }, { $set: { adminUnread: 0 } })
     res.json({ message: 'Read' })
   } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+// ── Upload / request errors → JSON (never HTML) ──
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err)
+  console.error(`[error] ${req.method} ${req.path}:`, err)
+  if (err?.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ error: 'File is too large. Maximum size is 50MB.' })
+  }
+  if (err?.name === 'MulterError') {
+    return res.status(400).json({ error: err.message })
+  }
+  if (err) {
+    const status = err.status || err.statusCode || 500
+    return res.status(status).json({ error: status === 500 ? 'Something went wrong' : err.message })
+  }
+  next()
 })
 
 // ── Vercel Export ──
